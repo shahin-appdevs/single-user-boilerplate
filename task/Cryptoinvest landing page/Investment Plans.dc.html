@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #F4F8F6; color: #061916; font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #1F8A6A; text-decoration: none; }
+  ::selection { background: #4EE0B0; color: #061916; }
+
+  @keyframes ip-rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes ip-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  @keyframes ip-slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  @keyframes ip-glow { 0%,100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+  @keyframes ip-orbit { to { transform: rotate(360deg); } }
+  @keyframes ip-flow { 0% { stroke-dashoffset: 40; } 100% { stroke-dashoffset: 0; } }
+
+  .ip-card { position: relative; background: #FFFFFF; border: 1px solid #E4EDE9; border-radius: 24px; box-shadow: 0 20px 60px rgba(6,25,22,0.06), 0 2px 8px rgba(6,25,22,0.03); animation: ip-rise 0.7s cubic-bezier(.2,.7,.2,1) both; overflow: hidden; }
+  .ip-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: #F0FBF6; border: 1px solid #C9EED9; color: #1F8A6A; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+
+  .ip-plan { position: relative; background: #FFFFFF; border: 1.5px solid #E4EDE9; border-radius: 28px; padding: 32px 28px; display: flex; flex-direction: column; gap: 20px; transition: transform 0.5s cubic-bezier(.2,.7,.2,1), border-color 0.4s, box-shadow 0.4s; animation: ip-rise 0.7s cubic-bezier(.2,.7,.2,1) both; overflow: hidden; }
+  .ip-plan:hover { transform: translateY(-8px); border-color: #C9EED9; box-shadow: 0 24px 60px rgba(78,224,176,0.18); }
+  .ip-plan:nth-child(1) { animation-delay: 0.05s; }
+  .ip-plan:nth-child(2) { animation-delay: 0.12s; }
+  .ip-plan:nth-child(3) { animation-delay: 0.19s; }
+  .ip-plan:nth-child(4) { animation-delay: 0.26s; }
+  .ip-featured { background: linear-gradient(160deg, #F0FBF6 0%, #FFFFFF 60%); border-color: #4EE0B0; box-shadow: 0 20px 50px rgba(78,224,176,0.22); transform: translateY(-8px); }
+  .ip-featured:hover { transform: translateY(-14px); box-shadow: 0 30px 70px rgba(78,224,176,0.30); }
+  .ip-glow { position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(78,224,176,0.30), transparent 70%); filter: blur(24px); animation: ip-glow 4s ease-in-out infinite; }
+  .ip-shine { position: absolute; inset: 0; overflow: hidden; border-radius: 28px; pointer-events: none; }
+  .ip-shine::before { content: ''; position: absolute; top: 0; left: 0; width: 40%; height: 100%; background: linear-gradient(105deg, transparent, rgba(78,224,176,0.10), transparent); animation: ip-slide 8s linear infinite; }
+
+  .ip-badge { position: absolute; top: 18px; right: 18px; padding: 5px 12px; border-radius: 999px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); color: #FFFFFF; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; box-shadow: 0 6px 14px rgba(78,224,176,0.30); }
+  .ip-badge-alt { position: absolute; top: 18px; right: 18px; padding: 5px 12px; border-radius: 999px; background: rgba(212,168,87,0.14); border: 1px solid rgba(212,168,87,0.40); color: #B8892F; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+
+  .ip-item { display: flex; align-items: flex-start; gap: 10px; color: #4A6259; font-size: 13px; line-height: 1.5; }
+  .ip-check { width: 18px; height: 18px; border-radius: 50%; background: #F0FBF6; border: 1px solid #C9EED9; display: grid; place-items: center; flex-shrink: 0; margin-top: 2px; }
+  .ip-check-featured { background: linear-gradient(135deg, #4EE0B0, #1F8A6A); border: 0; }
+  .ip-item strong { color: #061916; font-weight: 600; }
+
+  .ip-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px 22px; border-radius: 14px; background: #FFFFFF; color: #061916; font-weight: 600; font-size: 14px; border: 1.5px solid #E4EDE9; cursor: pointer; font-family: inherit; transition: all 0.3s; }
+  .ip-btn:hover { border-color: #4EE0B0; background: #F0FBF6; }
+  .ip-btn-primary { background: linear-gradient(135deg, #4EE0B0, #1F8A6A); color: #FFFFFF; border-color: transparent; box-shadow: 0 10px 24px rgba(78,224,176,0.30); position: relative; overflow: hidden; }
+  .ip-btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(105deg, transparent, rgba(255,255,255,0.4), transparent); animation: ip-slide 3s linear infinite; }
+  .ip-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(78,224,176,0.45); background: linear-gradient(135deg, #4EE0B0, #1F8A6A); }
+
+  .ip-toggle { display: inline-flex; padding: 5px; border-radius: 12px; background: #FFFFFF; border: 1px solid #E4EDE9; }
+  .ip-toggle button { padding: 8px 14px; border-radius: 8px; border: 0; background: transparent; color: #7C948C; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+  .ip-toggle button.active { background: linear-gradient(135deg, #4EE0B0, #1F8A6A); color: #FFFFFF; font-weight: 700; box-shadow: 0 4px 10px rgba(78,224,176,0.30); }
+
+  .ip-active-plan { padding: 18px 20px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E4EDE9; transition: all 0.3s; }
+  .ip-active-plan:hover { border-color: #C9EED9; box-shadow: 0 8px 20px rgba(78,224,176,0.10); }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; padding: 32px 24px; background:
+  radial-gradient(1200px 800px at 10% -10%, rgba(78,224,176,0.14), transparent 60%),
+  radial-gradient(900px 600px at 95% 90%, rgba(78,224,176,0.10), transparent 60%),
+  linear-gradient(180deg, #F7FBF9 0%, #F4F8F6 60%, #EEF5F1 100%);
+  position: relative; overflow: hidden;">
+
+  <!-- Background grid -->
+  <div style="position: absolute; inset: 0; background-image:
+      linear-gradient(rgba(6,25,22,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(6,25,22,0.03) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: radial-gradient(1200px 800px at 50% 30%, black, transparent 80%); pointer-events: none;"></div>
+
+  <div style="position: relative; max-width: 1320px; margin: 0 auto;">
+
+    <!-- Top bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; gap: 24px; flex-wrap: wrap;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <span class="ip-pill"><span style="width:6px; height:6px; border-radius:50%; background:#4EE0B0; animation: ip-blink 1.6s ease-in-out infinite;"></span>Portfolios · Live</span>
+          <span style="color:#7C948C; font-size: 13px; font-family:'JetBrains Mono', monospace;">0xA1c7…8d2f</span>
+        </div>
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 44px; line-height: 1.05; letter-spacing: -0.02em; margin: 0; color: #061916; font-weight: 700;">
+          Investment <em style="color:#1F8A6A;">plans</em>.
+        </h1>
+        <p style="margin: 6px 0 0; color: #4A6259; font-size: 15px;">Pick a strategy. We handle the rebalancing, custody, and taxes — you compound.</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="text-align: right;">
+          <div style="font-size: 11px; color:#7C948C; letter-spacing: 0.10em; text-transform: uppercase;">Invested</div>
+          <div style="font-family:'Playfair Display', serif; font-size: 28px; color:#061916;">$18,240<span style="color:#1F8A6A;">.00</span></div>
+        </div>
+        <div class="ip-toggle">
+          <button class="active">Growth</button>
+          <button>Income</button>
+          <button>Balanced</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat strip -->
+    <div class="ip-card" style="padding: 0; margin-bottom: 32px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #E4EDE9;">
+      <div style="padding: 24px 28px; background: #FFFFFF;">
+        <div style="font-size: 11px; color: #7C948C; letter-spacing: 0.10em; text-transform: uppercase; font-weight: 500;">Portfolio value</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 30px; color:#061916; margin-top: 6px;">$20,142<span style="color:#1F8A6A;">.18</span></div>
+      </div>
+      <div style="padding: 24px 28px; background: #FFFFFF;">
+        <div style="font-size: 11px; color: #7C948C; letter-spacing: 0.10em; text-transform: uppercase; font-weight: 500;">All-time return</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 30px; color:#1F8A6A; margin-top: 6px;">+10.4%</div>
+      </div>
+      <div style="padding: 24px 28px; background: #FFFFFF;">
+        <div style="font-size: 11px; color: #7C948C; letter-spacing: 0.10em; text-transform: uppercase; font-weight: 500;">Blended APY</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 30px; color:#061916; margin-top: 6px;">11.8%</div>
+      </div>
+      <div style="padding: 24px 28px; background: #FFFFFF;">
+        <div style="font-size: 11px; color: #7C948C; letter-spacing: 0.10em; text-transform: uppercase; font-weight: 500;">Active plans</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 30px; color:#061916; margin-top: 6px;">3 <span style="font-size: 15px; color:#7C948C;">of 12</span></div>
+      </div>
+    </div>
+
+    <!-- PLAN CARDS -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: start; margin-bottom: 40px;">
+
+      <!-- STARTER -->
+      <div class="ip-plan">
+        <div>
+          <div style="width: 44px; height: 44px; border-radius: 14px; background: #F0FBF6; border: 1px solid #C9EED9; display: grid; place-items: center; margin-bottom: 20px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4 L14 10 L20 10 L15 14 L17 20 L12 16 L7 20 L9 14 L4 10 L10 10 Z" stroke="#1F8A6A" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="font-family:'Playfair Display', serif; font-style: italic; font-size: 13px; color: #7C948C; letter-spacing: 0.06em; text-transform: uppercase;">— Conservative</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size: 28px; margin: 8px 0 6px; color: #061916; font-weight: 700;">Starter</h3>
+          <p style="margin: 0; color: #4A6259; font-size: 13px; line-height: 1.5;">Stablecoins + blue-chip yield. Low volatility.</p>
+        </div>
+
+        <div style="display: flex; align-items: baseline; gap: 6px;">
+          <span style="font-family:'Playfair Display', serif; font-size: 48px; color: #061916; line-height: 1; font-weight: 700;">6.2</span>
+          <span style="font-family:'Playfair Display', serif; font-size: 22px; color:#1F8A6A; font-weight: 600;">%</span>
+          <span style="font-size: 12px; color:#7C948C; margin-left: 4px;">APY</span>
+        </div>
+
+        <!-- Sparkline -->
+        <svg viewBox="0 0 200 40" style="width:100%; height:36px;" fill="none" preserveAspectRatio="none">
+          <path d="M0 30 Q30 28 50 26 T100 22 T150 20 T200 16" stroke="#1F8A6A" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M0 30 Q30 28 50 26 T100 22 T150 20 T200 16 L200 40 L0 40 Z" fill="rgba(78,224,176,0.10)"/>
+        </svg>
+
+        <div style="display: grid; gap: 10px;">
+          <div class="ip-item"><span class="ip-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="3" stroke-linecap="round"/></svg></span><span>Min. <strong>$50</strong> · no lockup</span></div>
+          <div class="ip-item"><span class="ip-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="3" stroke-linecap="round"/></svg></span><span>Weekly rebalance</span></div>
+          <div class="ip-item"><span class="ip-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="3" stroke-linecap="round"/></svg></span><span>Risk score <strong>2 / 10</strong></span></div>
+        </div>
+
+        <button class="ip-btn" type="button">
+          Invest now
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- GROWTH (featured) -->
+      <div class="ip-plan ip-featured">
+        <div class="ip-glow"></div>
+        <div class="ip-shine"></div>
+        <div class="ip-badge">Most popular</div>
+        <div style="position: relative;">
+          <div style="width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); display: grid; place-items: center; margin-bottom: 20px; box-shadow: 0 8px 18px rgba(78,224,176,0.30);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 18 L9 12 L13 15 L20 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 6 H20 V12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="font-family:'Playfair Display', serif; font-style: italic; font-size: 13px; color: #1F8A6A; letter-spacing: 0.06em; text-transform: uppercase;">— Growth</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size: 28px; margin: 8px 0 6px; color: #061916; font-weight: 700;">Compounder</h3>
+          <p style="margin: 0; color: #4A6259; font-size: 13px; line-height: 1.5;">Diversified basket of BTC, ETH &amp; L2 leaders.</p>
+        </div>
+
+        <div style="position: relative; display: flex; align-items: baseline; gap: 6px;">
+          <span style="font-family:'Playfair Display', serif; font-size: 48px; color: #061916; line-height: 1; font-weight: 700;">11.8</span>
+          <span style="font-family:'Playfair Display', serif; font-size: 22px; color:#1F8A6A; font-weight: 600;">%</span>
+          <span style="font-size: 12px; color:#7C948C; margin-left: 4px;">APY</span>
+        </div>
+
+        <svg viewBox="0 0 200 40" style="width:100%; height:36px; position: relative;" fill="none" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="ip-grad-featured" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4EE0B0" stop-opacity="0.35"/><stop offset="1" stop-color="#4EE0B0" stop-opacity="0"/></linearGradient>
+          </defs>
+          <path d="M0 32 Q25 28 50 22 T100 14 T150 16 T200 6" stroke="#1F8A6A" stroke-width="2" stroke-linecap="round"/>
+          <path d="M0 32 Q25 28 50 22 T100 14 T150 16 T200 6 L200 40 L0 40 Z" fill="url(#ip-grad-featured)"/>
+          <circle cx="200" cy="6" r="3.5" fill="#4EE0B0" style="filter: drop-shadow(0 0 4px #4EE0B0);"/>
+        </svg>
+
+        <div style="position: relative; display: grid; gap: 10px;">
+          <div class="ip-item"><span class="ip-check ip-check-featured"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></span><span>Min. <strong>$100</strong> · flexible</span></div>
+          <div class="ip-item"><span class="ip-check ip-check-featured"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></span><span>Daily rebalance · <strong>auto-compound</strong></span></div>
+          <div class="ip-item"><span class="ip-check ip-check-featured"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></span><span>Tax-loss harvesting</span></div>
+          <div class="ip-item"><span class="ip-check ip-check-featured"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></span><span>Risk score <strong>5 / 10</strong></span></div>
+        </div>
+
+        <button class="ip-btn ip-btn-primary" type="button">
+          Invest now
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- STAKING -->
+      <div class="ip-plan">
+        <div>
+          <div style="width: 44px; height: 44px; border-radius: 14px; background: #F0FBF6; border: 1px solid #C9EED9; display: grid; place-items: center; margin-bottom: 20px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="4" y="14" width="16" height="6" rx="1" stroke="#1F8A6A" stroke-width="1.8"/><rect x="6" y="9" width="12" height="5" rx="1" stroke="#1F8A6A" stroke-width="1.8"/><rect x="8" y="4" width="8" height="5" rx="1" stroke="#1F8A6A" stroke-width="1.8"/></svg>
+          </div>
+          <div style="font-family:'Playfair Display', serif; font-style: italic; font-size: 13px; color: #7C948C; letter-spacing: 0.06em; text-transform: uppercase;">— Real yield</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size: 28px; margin: 8px 0 6px; color: #061916; font-weight: 700;">Staker</h3>
+          <p style="margin: 0; color: #4A6259; font-size: 13px; line-height: 1.5;">Native protocol rewards across 14 chains.</p>
+        </div>
+
+        <div style="display: flex; align-items: baseline; gap: 6px;">
+          <span style="font-family:'Playfair Display', serif; font-size: 48px; color: #061916; line-height: 1; font-weight: 700;">14.6</span>
+          <span style="font-family:'Playfair Display', serif; font-size: 22px; color:#1F8A6A; font-weight: 600;">%</span>
+          <span style="font-size: 12px; color:#7C948C; margin-left: 4px;">APY</span>
+        </div>
+
+        <svg viewBox="0 0 200 40" style="width:100%; height:36px;" fill="none" preserveAspectRatio="none">
+          <path d="M0 34 Q30 20 50 28 T100 12 T150 22 T200 8" stroke="#1F8A6A" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M0 34 Q30 20 50 28 T100 12 T150 22 T200 8 L200 40 L0 40 Z" fill="rgba(78,224,176,0.10)"/>
+        </svg>
+
+        <div style="display: grid; gap: 10px;">
+          <div class="ip-item"><span class="ip-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="3" stroke-linecap="round"/></svg></span><span>Min. <strong>$250</strong> · 7-day unlock</span></div>
+          <div class="ip-item"><span class="ip-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="3" stroke-linecap="round"/></svg></span><span>Auto-compound daily</span></div>
+          <div class="ip-item"><span class="ip-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="3" stroke-linecap="round"/></svg></span><span>Risk score <strong>4 / 10</strong></span></div>
+        </div>
+
+        <button class="ip-btn" type="button">
+          Invest now
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- ALPHA (high-risk) -->
+      <div class="ip-plan">
+        <div class="ip-badge-alt">Advanced</div>
+        <div>
+          <div style="width: 44px; height: 44px; border-radius: 14px; background: rgba(212,168,87,0.14); border: 1px solid rgba(212,168,87,0.40); display: grid; place-items: center; margin-bottom: 20px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 3 L4 14 H12 L11 21 L20 10 H12 Z" stroke="#B8892F" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="font-family:'Playfair Display', serif; font-style: italic; font-size: 13px; color: #7C948C; letter-spacing: 0.06em; text-transform: uppercase;">— Aggressive</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size: 28px; margin: 8px 0 6px; color: #061916; font-weight: 700;">Alpha</h3>
+          <p style="margin: 0; color: #4A6259; font-size: 13px; line-height: 1.5;">Emerging L2s, memecoins, and delta-neutral hedges.</p>
+        </div>
+
+        <div style="display: flex; align-items: baseline; gap: 6px;">
+          <span style="font-family:'Playfair Display', serif; font-size: 48px; color: #061916; line-height: 1; font-weight: 700;">28.4</span>
+          <span style="font-family:'Playfair Display', serif; font-size: 22px; color:#B8892F; font-weight: 600;">%</span>
+          <span style="font-size: 12px; color:#7C948C; margin-left: 4px;">TARGET</span>
+        </div>
+
+        <svg viewBox="0 0 200 40" style="width:100%; height:36px;" fill="none" preserveAspectRatio="none">
+          <path d="M0 36 L30 10 L60 28 L90 6 L120 24 L150 4 L180 20 L200 2" stroke="#B8892F" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M0 36 L30 10 L60 28 L90 6 L120 24 L150 4 L180 20 L200 2 L200 40 L0 40 Z" fill="rgba(212,168,87,0.12)"/>
+        </svg>
+
+        <div style="display: grid; gap: 10px;">
+          <div class="ip-item"><span class="ip-check" style="background: rgba(212,168,87,0.14); border-color: rgba(212,168,87,0.40);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#B8892F" stroke-width="3" stroke-linecap="round"/></svg></span><span>Min. <strong>$1,000</strong> · 30-day lock</span></div>
+          <div class="ip-item"><span class="ip-check" style="background: rgba(212,168,87,0.14); border-color: rgba(212,168,87,0.40);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#B8892F" stroke-width="3" stroke-linecap="round"/></svg></span><span>Rebalanced by quant team</span></div>
+          <div class="ip-item"><span class="ip-check" style="background: rgba(212,168,87,0.14); border-color: rgba(212,168,87,0.40);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#B8892F" stroke-width="3" stroke-linecap="round"/></svg></span><span>Risk score <strong>9 / 10</strong></span></div>
+        </div>
+
+        <button class="ip-btn" type="button" style="border-color: rgba(212,168,87,0.40); color: #B8892F;">
+          Invest now
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- SECOND ROW: My active plans + Recommendations -->
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; align-items: start;">
+
+      <!-- Active plans -->
+      <div class="ip-card" style="padding: 32px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+          <div>
+            <div style="font-size: 11px; color: #1F8A6A; letter-spacing: 0.10em; text-transform: uppercase; font-weight: 600;">§ Your positions</div>
+            <div style="font-family:'Playfair Display', serif; font-size: 26px; color:#061916; font-weight: 700; margin-top: 4px;">Active plans</div>
+          </div>
+          <a href="#" style="font-size: 13px; color:#1F8A6A; font-weight: 600;">View all →</a>
+        </div>
+
+        <div style="display: grid; gap: 12px;">
+
+          <div class="ip-active-plan">
+            <div style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 20px; align-items: center;">
+              <div style="width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); display: grid; place-items: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18 L9 12 L13 15 L20 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Playfair Display', serif; font-size: 18px; color:#061916; font-weight: 700;">Compounder</div>
+                <div style="font-size: 12px; color:#7C948C;">Started Mar 4 · rebalanced today</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-family:'Playfair Display', serif; font-size: 22px; color:#061916;">$12,400<span style="color:#7C948C; font-size: 13px;">.00</span></div>
+                <div style="font-size: 12px; color:#1F8A6A; font-weight: 600;">+$1,462 · +11.8%</div>
+              </div>
+              <button style="width: 36px; height: 36px; border-radius: 50%; border: 1px solid #E4EDE9; background: #FFFFFF; color: #7C948C; cursor: pointer; display: grid; place-items: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <div style="height: 6px; border-radius: 999px; background: #EAF0ED; overflow: hidden; margin-top: 16px;">
+              <div style="width: 68%; height: 100%; background: linear-gradient(90deg, #4EE0B0, #7DEEC5);"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: #7C948C;">
+              <span>68% of target · $18k goal</span>
+              <span>Rebalance in 24h</span>
+            </div>
+          </div>
+
+          <div class="ip-active-plan">
+            <div style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 20px; align-items: center;">
+              <div style="width: 44px; height: 44px; border-radius: 14px; background: #F0FBF6; border: 1px solid #C9EED9; display: grid; place-items: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="14" width="16" height="6" rx="1" stroke="#1F8A6A" stroke-width="1.8"/><rect x="6" y="9" width="12" height="5" rx="1" stroke="#1F8A6A" stroke-width="1.8"/><rect x="8" y="4" width="8" height="5" rx="1" stroke="#1F8A6A" stroke-width="1.8"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Playfair Display', serif; font-size: 18px; color:#061916; font-weight: 700;">Staker</div>
+                <div style="font-size: 12px; color:#7C948C;">Started Feb 10 · 14.6% APY compounding</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-family:'Playfair Display', serif; font-size: 22px; color:#061916;">$4,320<span style="color:#7C948C; font-size: 13px;">.42</span></div>
+                <div style="font-size: 12px; color:#1F8A6A; font-weight: 600;">+$820 · +23.4%</div>
+              </div>
+              <button style="width: 36px; height: 36px; border-radius: 50%; border: 1px solid #E4EDE9; background: #FFFFFF; color: #7C948C; cursor: pointer; display: grid; place-items: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <div style="height: 6px; border-radius: 999px; background: #EAF0ED; overflow: hidden; margin-top: 16px;">
+              <div style="width: 43%; height: 100%; background: linear-gradient(90deg, #4EE0B0, #7DEEC5);"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: #7C948C;">
+              <span>43% of target · $10k goal</span>
+              <span>Auto-compound daily</span>
+            </div>
+          </div>
+
+          <div class="ip-active-plan">
+            <div style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 20px; align-items: center;">
+              <div style="width: 44px; height: 44px; border-radius: 14px; background: #F0FBF6; border: 1px solid #C9EED9; display: grid; place-items: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4 L14 10 L20 10 L15 14 L17 20 L12 16 L7 20 L9 14 L4 10 L10 10 Z" stroke="#1F8A6A" stroke-width="1.6" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Playfair Display', serif; font-size: 18px; color:#061916; font-weight: 700;">Starter</div>
+                <div style="font-size: 12px; color:#7C948C;">Started Jan 2 · stablecoin core</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-family:'Playfair Display', serif; font-size: 22px; color:#061916;">$1,520<span style="color:#7C948C; font-size: 13px;">.00</span></div>
+                <div style="font-size: 12px; color:#1F8A6A; font-weight: 600;">+$94 · +6.6%</div>
+              </div>
+              <button style="width: 36px; height: 36px; border-radius: 50%; border: 1px solid #E4EDE9; background: #FFFFFF; color: #7C948C; cursor: pointer; display: grid; place-items: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <div style="height: 6px; border-radius: 999px; background: #EAF0ED; overflow: hidden; margin-top: 16px;">
+              <div style="width: 30%; height: 100%; background: linear-gradient(90deg, #4EE0B0, #7DEEC5);"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: #7C948C;">
+              <span>30% of target · $5k goal</span>
+              <span>Weekly rebalance</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right rail: recommendations + custom -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+
+        <!-- Recommendations -->
+        <div class="ip-card" style="padding: 32px; position: relative; overflow: hidden;">
+          <div style="position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border: 1px dashed rgba(78,224,176,0.35); border-radius: 50%; animation: ip-orbit 20s linear infinite;">
+            <div style="position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; border-radius: 50%; background: #4EE0B0; margin-left: -5px;"></div>
+          </div>
+          <div style="position: relative;">
+            <div style="font-size: 11px; color: #1F8A6A; letter-spacing: 0.10em; text-transform: uppercase; font-weight: 600;">§ Suggested for you</div>
+            <div style="font-family:'Playfair Display', serif; font-size: 22px; color:#061916; font-weight: 700; margin-top: 4px; line-height: 1.15;">Based on your risk profile</div>
+
+            <div style="margin-top: 20px; padding: 16px; border-radius: 14px; background: linear-gradient(135deg, #F0FBF6, #FFFFFF); border: 1px solid #C9EED9; display: flex; align-items: center; gap: 14px;">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); display: grid; place-items: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18 L9 12 L13 15 L20 6" stroke="#FFF" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Add $500 to Compounder</div>
+                <div style="font-size: 12px; color:#4A6259;">Projected +$59 in 12 months</div>
+              </div>
+              <button style="padding: 8px 12px; border-radius: 10px; background: #FFFFFF; border: 1px solid #C9EED9; color: #1F8A6A; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">Add</button>
+            </div>
+
+            <div style="margin-top: 12px; padding: 16px; border-radius: 14px; background: #F7FBF9; border: 1px solid #EAF0ED; display: flex; align-items: center; gap: 14px;">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: rgba(212,168,87,0.14); border: 1px solid rgba(212,168,87,0.40); display: grid; place-items: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 3 L4 14 H12 L11 21 L20 10 H12 Z" stroke="#B8892F" stroke-width="1.6" stroke-linejoin="round"/></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Try Alpha with 5%</div>
+                <div style="font-size: 12px; color:#4A6259;">Small allocation, big upside potential</div>
+              </div>
+              <button style="padding: 8px 12px; border-radius: 10px; background: #FFFFFF; border: 1px solid #EAF0ED; color: #4A6259; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;">View</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom plan CTA -->
+        <div class="ip-card" style="padding: 32px; background: linear-gradient(160deg, #061916, #0A2A22); border-color: #0A2A22; color: #F1FAF5;">
+          <div style="width: 44px; height: 44px; border-radius: 14px; background: rgba(78,224,176,0.14); border: 1px solid rgba(78,224,176,0.28); display: grid; place-items: center; margin-bottom: 20px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="#4EE0B0" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="#4EE0B0" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="#4EE0B0" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="#4EE0B0" stroke-width="1.8"/></svg>
+          </div>
+          <div style="font-family:'Playfair Display', serif; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em;">Build a <em style="color:#4EE0B0;">custom</em> basket.</div>
+          <p style="margin: 10px 0 20px; font-size: 13px; color: #A8BEB6; line-height: 1.55;">Pick your own weights across 20+ assets. Set rebalance rules. We custody and execute on-chain.</p>
+          <button style="width: 100%; padding: 14px; border-radius: 12px; background: #4EE0B0; color: #061916; font-family: inherit; font-weight: 700; font-size: 14px; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+            Design a plan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

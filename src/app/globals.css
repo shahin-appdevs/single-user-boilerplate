@@ -1,0 +1,406 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Dashboard shell breakpoint: persistent sidebar from sm up (lg/md/sm = web
+     layout); collapses to drawer + bottom-nav only on phones (< 640px). */
+  --breakpoint-dapp: 640px;
+
+  /* Shared elevation scale — keep card/tile/hover shadows consistent.
+     Use: shadow-tile, shadow-tile-raised, shadow-card, shadow-lift. */
+  --shadow-tile: 0 18px 40px -24px rgba(20, 30, 70, 0.3);
+  --shadow-tile-raised: 0 18px 40px -18px rgba(20, 30, 70, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --shadow-card: 0 22px 45px -22px rgba(20, 30, 70, 0.5);
+  --shadow-lift: 0 24px 50px -24px rgba(20, 30, 70, 0.45);
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  /* DM Sans = Latin body/display, Noto Sans Arabic = RTL fallback,
+     Playfair Display = hero serif. Latin renders DM Sans; Arabic falls to Noto. */
+  --font-sans: var(--font-dm-sans), var(--font-noto), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-body: var(--font-dm-sans), var(--font-noto), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-display: var(--font-dm-sans), var(--font-noto), ui-sans-serif,
+    system-ui, sans-serif;
+  --font-heading: var(--font-dm-sans), var(--font-noto), ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --font-hero: var(--font-playfair), ui-serif, Georgia, serif;
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar: hsl(var(--sidebar));
+  --color-chart-5: hsl(var(--chart-5));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-1: hsl(var(--chart-1));
+  --color-ring: hsl(var(--ring));
+  --color-input: hsl(var(--input));
+  --color-border: hsl(var(--border));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card: hsl(var(--card));
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Brand tokens shared across themes (HSL component form so hsl(var(--x)) works).
+   Backend can override these inline on :root at runtime — keep names stable. */
+:root {
+  --grad-from: 164 82% 53%;
+  --grad-to: 187 66% 42%;
+  --gradient: linear-gradient(115deg, hsl(var(--grad-from)), hsl(var(--grad-to)));
+  --nav-h: 72px;
+  --maxw: 1240px;
+  --motion: 1;
+}
+
+:root {
+  --background: 204 30% 98.5%;
+  --foreground: 203 76% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 203 76% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 203 76% 8%;
+  --primary: 165 84% 28%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 207 30% 95%;
+  --secondary-foreground: 204 42% 15%;
+  --muted: 207 26% 95%;
+  --muted-foreground: 207 26% 38%;
+  --accent: 207 26% 31%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 207 24% 88%;
+  --input: 207 24% 88%;
+  --ring: 165 84% 28%;
+  --radius: 0.75rem;
+
+  /* marketing surfaces */
+  --surface: hsl(0 0% 100% / 0.72);
+  --surface-2: hsl(207 26% 97% / 0.8);
+  --surface-solid: #fff;
+  --hairline: hsl(204 42% 15% / 0.1);
+  --hairline-strong: hsl(204 42% 15% / 0.16);
+  --text-2: hsl(207 26% 34%);
+  --text-3: hsl(207 20% 52%);
+  --glow: hsl(164 82% 53% / 0.28);
+  --card-shadow: 0 30px 70px -36px hsl(204 42% 20% / 0.3);
+  --dot: hsl(204 42% 20% / 0.06);
+  --aurora-a: hsl(164 82% 53% / 0.26);
+  --aurora-b: hsl(187 66% 45% / 0.22);
+  --aurora-c: hsl(207 60% 45% / 0.18);
+}
+
+.dark {
+  --background: 203 76% 8%;
+  --foreground: 207 30% 96%;
+  --card: 204 42% 15%;
+  --card-foreground: 207 30% 96%;
+  --popover: 204 42% 15%;
+  --popover-foreground: 207 30% 96%;
+  --primary: 164 82% 53%;
+  --primary-foreground: 203 76% 8%;
+  --secondary: 207 26% 20%;
+  --secondary-foreground: 207 30% 96%;
+  --muted: 207 26% 20%;
+  --muted-foreground: 207 26% 72%;
+  --accent: 207 26% 31%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 207 26% 90% / 0.1;
+  --input: 207 26% 90% / 0.13;
+  --ring: 164 82% 53%;
+
+  --surface: hsl(204 42% 15% / 0.62);
+  --surface-2: hsl(207 26% 20% / 0.55);
+  --surface-solid: hsl(204 42% 15%);
+  --hairline: hsl(207 26% 90% / 0.1);
+  --hairline-strong: hsl(207 26% 90% / 0.18);
+  --text-2: hsl(207 26% 72%);
+  --text-3: hsl(207 20% 52%);
+  --glow: hsl(164 82% 53% / 0.4);
+  --card-shadow: 0 30px 80px -30px hsl(203 80% 3% / 0.9);
+  --dot: hsl(207 40% 80% / 0.05);
+  /* Ambient glows — mint/teal, brand primary. */
+  --aurora-a: hsl(164 82% 53% / 0.3);
+  --aurora-b: hsl(164 82% 53% / 0.5);
+  --aurora-c: hsl(164 82% 53% / 0.28);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  html {
+    @apply font-sans;
+  }
+
+  /* Hairline default borders app-wide. Only the bare 1px utilities — explicit
+     border-2/border-4/etc are untouched. */
+  /* .border,
+  .border-t,
+  .border-b,
+  .border-s,
+  .border-e,
+  .border-x,
+  .border-y {
+    border-width: 0.5px;
+  } */
+}
+
+@layer components {
+  .glass {
+    background: var(--surface);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    backdrop-filter: blur(22px) saturate(150%);
+    border: 1px solid var(--hairline);
+    border-radius: 24px;
+    box-shadow: var(--card-shadow), inset 0 1px 0 hsl(0 0% 100% / 0.06);
+  }
+
+  /* Mobile/tablet: backdrop-filter blur repaints on every scroll/animation
+     frame and janks low-power GPUs. Drop it below `lg`; the translucent
+     surface still reads fine without the blur. */
+  @media (max-width: 1023px) {
+    .glass {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Inner highlight shadow — can be combined with other shadows. */
+  .card-shadow {
+    box-shadow: var(--card-shadow), inset 0 1px 0 hsl(0 0% 100% / 0.06);
+  }
+
+  /* Brand gradient fill (text or surface). */
+  .bg-grad {
+    background: var(--gradient);
+  }
+
+  /* Dashboard reveal: hidden until mounted, then fades up. */
+  .dfade {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: reveal 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+}
+
+/* Kill the browser autofill background/text tint — keep the field's own bg.
+   !important beats the field's own `transition-colors` utility, which would
+   otherwise let the autofill bg fade in after ~150ms. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill {
+  -webkit-text-fill-color: hsl(var(--foreground));
+  caret-color: hsl(var(--foreground));
+  transition: background-color 9999s ease-in-out 0s !important;
+}
+
+@keyframes scroll-x {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes float-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(6vw, 4vw) scale(1.12);
+  }
+}
+@keyframes float-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5vw, 5vw) scale(1.08);
+  }
+}
+@keyframes float-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-4vw, -4vw) scale(1.16);
+  }
+}
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Equalizer bars — security card. */
+@keyframes am-bar {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+/* Auth panel entrance — fade + rise. */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Success burst — overshoot pop for the send-success state. */
+@keyframes burst {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* Area-chart line draw — set --draw-len to the path length on the element. */
+@keyframes line-draw {
+  from {
+    stroke-dashoffset: var(--draw-len, 1000);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+/* Spinner for processing states. */
+@keyframes dspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Sheet enter — slide up from bottom (mobile sheets). */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@theme {
+  --animate-accordion-down: accordion-down 0.3s cubic-bezier(0.3, 0.7, 0.3, 1);
+  --animate-accordion-up: accordion-up 0.3s cubic-bezier(0.3, 0.7, 0.3, 1);
+  /* Dashboard motion — use as animate-dfade / animate-burst / etc. */
+  --animate-dfade: reveal 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  --animate-burst: burst 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-line-draw: line-draw 1s ease-out forwards;
+  --animate-dspin: dspin 0.8s linear infinite;
+  --animate-sheet-up: sheet-up 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Honor reduced-motion: kill dashboard reveal/burst/draw/sheet motion. */
+/* @media (prefers-reduced-motion: reduce) {
+  .dfade {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+ */
+
+/* ── Thin scrollbar ─────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+
+*::-webkit-scrollbar        { width: 4px; height: 4px; }
+*::-webkit-scrollbar-track  { background: transparent; }
+*::-webkit-scrollbar-thumb  { background: hsl(var(--border)); border-radius: 999px; }
+*::-webkit-scrollbar-thumb:hover { background: hsl(var(--hairline-strong)); }
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+.scroll-thin::-webkit-scrollbar        { width: 4px; }
+.scroll-thin::-webkit-scrollbar-track  { background: transparent; }
+.scroll-thin::-webkit-scrollbar-thumb  { background: hsl(var(--border)); border-radius: 999px; }
+.scroll-thin::-webkit-scrollbar-thumb:hover { background: hsl(var(--hairline-strong)); }

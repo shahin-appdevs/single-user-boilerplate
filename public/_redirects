@@ -1,0 +1,2 @@
+# Middleware doesn't run on static export — redirect the bare root to default locale.
+/    /en/    302

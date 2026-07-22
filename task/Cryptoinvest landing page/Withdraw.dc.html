@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #F4F8F6; color: #061916; font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #1F8A6A; text-decoration: none; }
+  ::selection { background: #4EE0B0; color: #061916; }
+
+  @keyframes wd-rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes wd-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  @keyframes wd-orbit { to { transform: rotate(360deg); } }
+  @keyframes wd-slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  @keyframes wd-flow { 0% { stroke-dashoffset: 40; } 100% { stroke-dashoffset: 0; } }
+
+  .wd-card { position: relative; background: #FFFFFF; border: 1px solid #E4EDE9; border-radius: 28px; box-shadow: 0 20px 60px rgba(6,25,22,0.06), 0 2px 8px rgba(6,25,22,0.03); animation: wd-rise 0.7s cubic-bezier(.2,.7,.2,1) both; }
+  .wd-shine { position: absolute; inset: 0; overflow: hidden; border-radius: 28px; pointer-events: none; }
+  .wd-shine::before { content: ''; position: absolute; top: 0; left: 0; width: 40%; height: 100%; background: linear-gradient(105deg, transparent, rgba(78,224,176,0.08), transparent); animation: wd-slide 8s linear infinite; }
+
+  .wd-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #1F8A6A; font-weight: 600; }
+  .wd-step-num { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); color: #FFFFFF; display: grid; place-items: center; font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; box-shadow: 0 4px 10px rgba(78,224,176,0.30); }
+
+  .wd-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: #F0FBF6; border: 1px solid #C9EED9; color: #1F8A6A; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+
+  .wd-bal { position: relative; padding: 24px; border-radius: 22px; background: #FFFFFF; border: 1.5px solid #E4EDE9; cursor: pointer; transition: all 0.3s cubic-bezier(.2,.7,.2,1); overflow: hidden; }
+  .wd-bal:hover { border-color: #C9EED9; transform: translateY(-3px); box-shadow: 0 12px 28px rgba(78,224,176,0.14); }
+  .wd-bal.active { border-color: #4EE0B0; background: linear-gradient(160deg, #F0FBF6, #FFFFFF 60%); box-shadow: 0 16px 40px rgba(78,224,176,0.22); }
+  .wd-bal .wd-check { position: absolute; top: 16px; right: 16px; width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF; border: 1.5px solid #C9D8D2; display: grid; place-items: center; transition: all 0.3s; }
+  .wd-bal.active .wd-check { background: linear-gradient(135deg, #4EE0B0, #1F8A6A); border-color: transparent; }
+  .wd-bal.active .wd-check svg { opacity: 1; }
+  .wd-bal .wd-check svg { opacity: 0; transition: opacity 0.3s; }
+
+  .wd-gateway { position: relative; padding: 18px; border-radius: 16px; background: #FFFFFF; border: 1.5px solid #E4EDE9; cursor: pointer; transition: all 0.3s cubic-bezier(.2,.7,.2,1); display: flex; align-items: center; gap: 14px; }
+  .wd-gateway:hover { border-color: #C9EED9; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(78,224,176,0.12); }
+  .wd-gateway.active { border-color: #4EE0B0; background: linear-gradient(135deg, #F0FBF6, #FFFFFF); box-shadow: 0 10px 24px rgba(78,224,176,0.18); }
+  .wd-gateway .wd-check { position: absolute; top: 12px; right: 12px; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; border: 1.5px solid #C9D8D2; display: grid; place-items: center; transition: all 0.3s; }
+  .wd-gateway.active .wd-check { background: linear-gradient(135deg, #4EE0B0, #1F8A6A); border-color: transparent; }
+  .wd-gateway.active .wd-check svg { opacity: 1; }
+  .wd-gateway .wd-check svg { opacity: 0; transition: opacity 0.3s; }
+  .wd-gateway-logo { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: #FFFFFF; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+
+  .wd-amt-input { width: 100%; padding: 28px 24px 28px 90px; background: linear-gradient(135deg, #F7FBF9, #FFFFFF); border: 1.5px solid #E4EDE9; border-radius: 22px; font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; color: #061916; outline: none; letter-spacing: -0.02em; box-sizing: border-box; transition: border-color 0.3s, box-shadow 0.3s; }
+  .wd-amt-input:focus { border-color: #4EE0B0; box-shadow: 0 0 0 4px rgba(78,224,176,0.15); }
+  .wd-amt-input::placeholder { color: #C9D8D2; }
+
+  .wd-quick { padding: 10px 16px; border-radius: 999px; border: 1.5px solid #E4EDE9; background: #FFFFFF; color: #061916; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.3s; }
+  .wd-quick:hover { border-color: #4EE0B0; background: #F0FBF6; transform: translateY(-2px); }
+  .wd-quick.active { background: linear-gradient(135deg, #4EE0B0, #1F8A6A); color: #FFFFFF; border-color: transparent; box-shadow: 0 6px 16px rgba(78,224,176,0.30); }
+
+  .wd-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 20px 28px; border-radius: 18px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); color: #FFFFFF; font-weight: 700; font-size: 16px; border: 0; cursor: pointer; font-family: inherit; box-shadow: 0 16px 40px rgba(78,224,176,0.35); transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; }
+  .wd-btn:hover { transform: translateY(-3px); box-shadow: 0 24px 60px rgba(78,224,176,0.50); }
+  .wd-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(105deg, transparent, rgba(255,255,255,0.4), transparent); animation: wd-slide 3s linear infinite; }
+
+  .wd-preview-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+  .wd-preview-row + .wd-preview-row { border-top: 1px dashed #EAF0ED; }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; padding: 32px 24px; background:
+  radial-gradient(1200px 800px at 10% -10%, rgba(78,224,176,0.14), transparent 60%),
+  radial-gradient(900px 600px at 95% 90%, rgba(78,224,176,0.10), transparent 60%),
+  linear-gradient(180deg, #F7FBF9 0%, #F4F8F6 60%, #EEF5F1 100%);
+  position: relative; overflow: hidden;">
+
+  <!-- Background grid -->
+  <div style="position: absolute; inset: 0; background-image:
+      linear-gradient(rgba(6,25,22,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(6,25,22,0.03) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: radial-gradient(1200px 800px at 50% 30%, black, transparent 80%); pointer-events: none;"></div>
+
+  <div style="position: relative; max-width: 1320px; margin: 0 auto;">
+
+    <!-- Top bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; gap: 24px; flex-wrap: wrap;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <span class="wd-pill"><span style="width:6px; height:6px; border-radius:50%; background:#4EE0B0; animation: wd-blink 1.6s ease-in-out infinite;"></span>Withdraw · Secure</span>
+          <span style="color:#7C948C; font-size: 13px; font-family:'JetBrains Mono', monospace;">0xA1c7…8d2f</span>
+        </div>
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 44px; line-height: 1.05; letter-spacing: -0.02em; margin: 0; color: #061916; font-weight: 700;">
+          Withdraw <em style="color:#1F8A6A;">funds</em>.
+        </h1>
+        <p style="margin: 6px 0 0; color: #4A6259; font-size: 15px;">Pick a balance, route through a gateway, review — cash out in seconds.</p>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 11px; color:#7C948C; letter-spacing: 0.10em; text-transform: uppercase;">Total withdrawable</div>
+        <div style="font-family:'Playfair Display', serif; font-size: 34px; color:#061916; line-height: 1;">$32,204<span style="color:#1F8A6A;">.68</span></div>
+      </div>
+    </div>
+
+    <!-- Main grid -->
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; align-items: start;">
+
+      <!-- LEFT: composer -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+
+        <!-- STEP 1 · BALANCE TYPE -->
+        <div class="wd-card" style="padding: 36px;">
+          <div class="wd-shine"></div>
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+            <div class="wd-step-num">1</div>
+            <div>
+              <div class="wd-eyebrow">Step 01</div>
+              <div style="font-family:'Playfair Display', serif; font-size: 24px; color:#061916; font-weight: 700; line-height: 1.1; margin-top: 2px;">Balance type</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+            <!-- Spendable -->
+            <div class="wd-bal active">
+              <div class="wd-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+                <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); display: grid; place-items: center;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 8 H21 V18 A2 2 0 0 1 19 20 H5 A2 2 0 0 1 3 18 Z" stroke="#FFF" stroke-width="1.8"/><path d="M3 12 H21" stroke="#FFF" stroke-width="1.8"/><circle cx="17" cy="16" r="1.5" fill="#FFF"/></svg>
+                </div>
+                <div>
+                  <div style="font-family:'Playfair Display', serif; font-size: 20px; color:#061916; font-weight: 700;">Spendable</div>
+                  <div style="font-size: 12px; color:#4A6259;">Ready to withdraw · no lockup</div>
+                </div>
+              </div>
+              <div style="font-family:'Playfair Display', serif; font-size: 36px; color:#061916; line-height: 1; letter-spacing: -0.01em;">$24,819<span style="color:#1F8A6A;">.42</span></div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px dashed #C9EED9;">
+                <span style="font-size: 12px; color:#4A6259;">Instant · fee-free</span>
+                <span style="font-size: 11px; color:#1F8A6A; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;">✓ Available now</span>
+              </div>
+            </div>
+
+            <!-- Investment / Yield -->
+            <div class="wd-bal">
+              <div class="wd-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+                <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #F0D8A8, #D4A857); display: grid; place-items: center;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 18 L9 12 L13 15 L20 6" stroke="#061916" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 6 H20 V12" stroke="#061916" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <div style="font-family:'Playfair Display', serif; font-size: 20px; color:#061916; font-weight: 700;">Investment</div>
+                  <div style="font-size: 12px; color:#4A6259;">Yield + staking · 24hr unlock</div>
+                </div>
+              </div>
+              <div style="font-family:'Playfair Display', serif; font-size: 36px; color:#061916; line-height: 1; letter-spacing: -0.01em;">$7,385<span style="color:#D4A857;">.26</span></div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px dashed #E4EDE9;">
+                <span style="font-size: 12px; color:#4A6259;">11.8% APY earning</span>
+                <span style="font-size: 11px; color:#D4A857; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;">⏱ 24h cooldown</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 · PAYMENT GATEWAY -->
+        <div class="wd-card" style="padding: 36px;">
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+            <div class="wd-step-num">2</div>
+            <div>
+              <div class="wd-eyebrow">Step 02</div>
+              <div style="font-family:'Playfair Display', serif; font-size: 24px; color:#061916; font-weight: 700; line-height: 1.1; margin-top: 2px;">Payment gateway</div>
+            </div>
+          </div>
+
+          <!-- Search + filter -->
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="position: relative; flex: 1; min-width: 240px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="position:absolute; left:16px; top:50%; transform:translateY(-50%);"><circle cx="11" cy="11" r="7" stroke="#7C948C" stroke-width="1.8"/><path d="M20 20 L16 16" stroke="#7C948C" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <input type="text" placeholder="Search 32 payout gateways…" style="width:100%; padding: 12px 16px 12px 44px; border-radius: 12px; background: #F7FBF9; border: 1px solid #E4EDE9; color: #061916; font-family: inherit; font-size: 14px; outline: none; box-sizing: border-box;"/>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="wd-quick active" style="padding: 8px 14px; font-size: 12px;">All · 32</button>
+              <button class="wd-quick" style="padding: 8px 14px; font-size: 12px;">Bank</button>
+              <button class="wd-quick" style="padding: 8px 14px; font-size: 12px;">Wallet</button>
+              <button class="wd-quick" style="padding: 8px 14px; font-size: 12px;">Crypto</button>
+              <button class="wd-quick" style="padding: 8px 14px; font-size: 12px;">Card</button>
+            </div>
+          </div>
+
+          <!-- Gateway list -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+
+            <div class="wd-gateway active">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #4A6259, #061916);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 11 L12 4 L22 11 M4 20 H20 M4 11 V20 M20 11 V20 M8 11 V20 M12 11 V20 M16 11 V20" stroke="#FFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Bank wire · ACH</div>
+                <div style="font-size: 12px; color:#4A6259;">Chase ••4419 · 1–2 days · Free</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #003087, #009CDE);">SEPA</div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">SEPA</div>
+                <div style="font-size: 12px; color:#4A6259;">EU bank · Instant · €0.50</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #0070BA, #003087);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFF"><path d="M8 3 H15 C18 3 20 5 20 8 C20 11 18 13 15 13 H12 L11 20 H8 L9.5 11 H12.5 C14 11 15 10 15 8 C15 6.5 14 5.5 12.5 5.5 H10 Z"/></svg>
+              </div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">PayPal</div>
+                <div style="font-size: 12px; color:#4A6259;">Balance · Instant · 2.0%</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #37517E, #163300);">W</div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Wise</div>
+                <div style="font-size: 12px; color:#4A6259;">Multi-currency · 1 day · 0.4%</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #0075EB, #002F6C);">R</div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Revolut</div>
+                <div style="font-size: 12px; color:#4A6259;">Instant · Free</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #F7931A, #E27725);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFF"><path d="M9 4 V6 H8 V4 M12 4 V6 H11 V4 M8 6 H15 A3 3 0 0 1 15 12 A3 3 0 0 1 15 18 H8 V6 M11 8 V16 M13 8 V16"/></svg>
+              </div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Crypto · BTC</div>
+                <div style="font-size: 12px; color:#4A6259;">On-chain · ~8 sec · Free</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #26A17B, #1F8060);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFF"><circle cx="12" cy="12" r="10"/><path d="M9 8 H15 V10 H13 V16 H11 V10 H9 Z" fill="#26A17B"/></svg>
+              </div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Crypto · USDC</div>
+                <div style="font-size: 12px; color:#4A6259;">On-chain · ~5 sec · Free</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #009EE3, #0068A8);">M</div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Mercado Pago</div>
+                <div style="font-size: 12px; color:#4A6259;">LATAM · Instant · 1.8%</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #4CAF50, #1B5E20);">M</div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">M-Pesa</div>
+                <div style="font-size: 12px; color:#4A6259;">Mobile · 30 sec · 1.5%</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #FF9933, #138808);">U</div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">UPI · India</div>
+                <div style="font-size: 12px; color:#4A6259;">Instant · Free</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #635BFF, #4B47C5);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#FFF" stroke-width="1.8"/><path d="M3 10 H21" stroke="#FFF" stroke-width="1.8"/></svg>
+              </div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Debit card · Visa</div>
+                <div style="font-size: 12px; color:#4A6259;">••4419 · Instant · 1.5%</div>
+              </div>
+            </div>
+
+            <div class="wd-gateway">
+              <div class="wd-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <div class="wd-gateway-logo" style="background: linear-gradient(135deg, #EB001B, #F79E1B);">MC</div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-family:'Playfair Display', serif; font-size: 16px; color:#061916; font-weight: 700;">Debit card · MC</div>
+                <div style="font-size: 12px; color:#4A6259;">••8823 · Instant · 1.5%</div>
+              </div>
+            </div>
+
+          </div>
+
+          <button style="width: 100%; margin-top: 16px; padding: 14px 20px; border-radius: 14px; border: 1px dashed #C9EED9; background: transparent; color: #1F8A6A; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+            View all 32 payout gateways
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9 L12 15 L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+        <!-- STEP 3 · AMOUNT -->
+        <div class="wd-card" style="padding: 36px;">
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+            <div class="wd-step-num">3</div>
+            <div>
+              <div class="wd-eyebrow">Step 03</div>
+              <div style="font-family:'Playfair Display', serif; font-size: 24px; color:#061916; font-weight: 700; line-height: 1.1; margin-top: 2px;">Amount</div>
+            </div>
+          </div>
+
+          <div style="position: relative; margin-bottom: 20px;">
+            <span style="position: absolute; left: 32px; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: 52px; color: #C9D8D2; font-weight: 700;">$</span>
+            <input class="wd-amt-input" type="text" placeholder="0.00" value="1,200.00"/>
+            <button style="position: absolute; right: 24px; top: 50%; transform: translateY(-50%); padding: 8px 14px; border-radius: 999px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); color: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 700; border: 0; cursor: pointer; letter-spacing: 0.06em;">MAX</button>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 12px 18px; border-radius: 14px; background: #F7FBF9; border: 1px solid #EAF0ED;">
+            <span style="font-size: 13px; color:#4A6259;">Available from Spendable</span>
+            <span style="font-family:'JetBrains Mono', monospace; color:#1F8A6A; font-size: 14px; font-weight: 600;">$24,819.42 USD</span>
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="wd-quick">$100</button>
+            <button class="wd-quick">$500</button>
+            <button class="wd-quick active">$1,200</button>
+            <button class="wd-quick">$2,500</button>
+            <button class="wd-quick">25%</button>
+            <button class="wd-quick">50%</button>
+            <button class="wd-quick">75%</button>
+            <button class="wd-quick" style="border-style: dashed;">Custom</button>
+          </div>
+
+          <!-- Progress meter -->
+          <div style="margin-top: 24px; padding: 16px 20px; border-radius: 14px; background: linear-gradient(135deg, #F0FBF6, #FFFFFF); border: 1px solid #C9EED9;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <span style="font-size: 12px; color:#4A6259; font-weight: 500;">Daily withdrawal limit</span>
+              <span style="font-family:'JetBrains Mono', monospace; font-size: 12px; color:#061916; font-weight: 600;">$1,200 / $25,000</span>
+            </div>
+            <div style="height: 6px; border-radius: 999px; background: #EAF0ED; overflow: hidden;">
+              <div style="width: 4.8%; height: 100%; background: linear-gradient(90deg, #4EE0B0, #7DEEC5); border-radius: 999px;"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: preview -->
+      <div style="position: sticky; top: 24px; display: flex; flex-direction: column; gap: 24px;">
+
+        <div class="wd-card" style="padding: 36px; animation-delay: 0.10s;">
+          <div class="wd-shine"></div>
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+            <div class="wd-step-num">4</div>
+            <div>
+              <div class="wd-eyebrow">Step 04</div>
+              <div style="font-family:'Playfair Display', serif; font-size: 24px; color:#061916; font-weight: 700; line-height: 1.1; margin-top: 2px;">Preview &amp; confirm</div>
+            </div>
+          </div>
+
+          <!-- Big result -->
+          <div style="position: relative; text-align: center; padding: 32px 24px; border-radius: 22px; background: linear-gradient(160deg, #F0FBF6, #FFFFFF 70%); border: 1px solid #C9EED9; margin-bottom: 24px; overflow: hidden;">
+            <div style="position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; border: 1px dashed rgba(78,224,176,0.5); border-radius: 50%; animation: wd-orbit 20s linear infinite;">
+              <div style="position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; border-radius: 50%; background: #4EE0B0; margin-left: -5px;"></div>
+            </div>
+            <div style="font-size: 11px; color:#1F8A6A; letter-spacing: 0.10em; text-transform: uppercase; font-weight: 600; margin-bottom: 12px;">You'll receive</div>
+            <div style="font-family:'Playfair Display', serif; font-size: 64px; color:#061916; line-height: 1; font-weight: 700; letter-spacing: -0.02em;">
+              $1,200<span style="color:#1F8A6A;">.00</span>
+            </div>
+            <div style="font-size: 13px; color:#4A6259; margin-top: 10px;">to Bank wire · Chase ••4419</div>
+          </div>
+
+          <!-- Breakdown -->
+          <div style="padding: 0 4px;">
+            <div class="wd-preview-row">
+              <span style="color:#4A6259; font-size: 14px;">From balance</span>
+              <span style="display:inline-flex; align-items:center; gap:6px; color:#061916; font-size: 14px; font-weight: 600;">
+                <span style="width: 6px; height: 6px; border-radius: 50%; background:#4EE0B0;"></span>
+                Spendable
+              </span>
+            </div>
+            <div class="wd-preview-row">
+              <span style="color:#4A6259; font-size: 14px;">Payout method</span>
+              <span style="color:#061916; font-size: 14px; font-weight: 600;">ACH · Chase</span>
+            </div>
+            <div class="wd-preview-row">
+              <span style="color:#4A6259; font-size: 14px;">Amount</span>
+              <span style="font-family:'JetBrains Mono', monospace; color:#061916; font-size: 14px; font-weight: 500;">1,200.00 USD</span>
+            </div>
+            <div class="wd-preview-row">
+              <span style="color:#4A6259; font-size: 14px;">Network fee</span>
+              <span style="color:#1F8A6A; font-size: 13px; font-weight: 700;">FREE</span>
+            </div>
+            <div class="wd-preview-row">
+              <span style="color:#4A6259; font-size: 14px;">Payout fee</span>
+              <span style="color:#1F8A6A; font-size: 13px; font-weight: 700;">FREE</span>
+            </div>
+            <div class="wd-preview-row" style="border-top: 1px solid #EAF0ED; margin-top: 4px; padding-top: 18px;">
+              <span style="font-family:'Playfair Display', serif; color:#061916; font-size: 17px; font-weight: 700;">Total received</span>
+              <span style="font-family:'Playfair Display', serif; color:#061916; font-size: 20px; font-weight: 700;">$1,200<span style="color:#1F8A6A;">.00</span></span>
+            </div>
+            <div class="wd-preview-row" style="padding-top: 4px;">
+              <span style="display:inline-flex; align-items:center; gap:6px; color:#4A6259; font-size: 13px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1F8A6A" stroke-width="1.8"/><path d="M12 7 V12 L15 15" stroke="#1F8A6A" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Estimated arrival
+              </span>
+              <span style="color:#061916; font-size: 13px; font-weight: 600;">1–2 business days</span>
+            </div>
+          </div>
+
+          <button class="wd-btn" type="button" style="margin-top: 24px;">
+            Withdraw $1,200.00
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4 V16 M6 10 L12 16 L18 10 M4 20 H20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <div style="text-align: center; margin-top: 14px; font-size: 12px; color:#4A6259; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 3 L20 7 V12 C20 16.5 16.5 20 12 21 C7.5 20 4 16.5 4 12 V7 Z" stroke="#1F8A6A" stroke-width="1.8"/></svg>
+            2FA + email confirmation required
+          </div>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="wd-card" style="padding: 20px 24px; display: flex; align-items: center; gap: 18px; animation-delay: 0.16s; flex-wrap: wrap;">
+          <div style="display:inline-flex; align-items:center; gap:8px; font-size: 12px; color:#4A6259; font-weight: 500;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="2.5" stroke-linecap="round"/></svg>
+            MPC signed
+          </div>
+          <div style="width: 1px; height: 14px; background: #E4EDE9;"></div>
+          <div style="display:inline-flex; align-items:center; gap:8px; font-size: 12px; color:#4A6259; font-weight: 500;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="2.5" stroke-linecap="round"/></svg>
+            SOC 2 Type II
+          </div>
+          <div style="width: 1px; height: 14px; background: #E4EDE9;"></div>
+          <div style="display:inline-flex; align-items:center; gap:8px; font-size: 12px; color:#4A6259; font-weight: 500;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#1F8A6A" stroke-width="2.5" stroke-linecap="round"/></svg>
+            Insured up to $250k
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

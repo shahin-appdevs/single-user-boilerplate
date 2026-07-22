@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #FAFCFB; color: #061916; font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #1F8A6A; text-decoration: none; }
+  a:hover { color: #4EE0B0; }
+  ::selection { background: #4EE0B0; color: #061916; }
+
+  @keyframes au-rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes au-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes au-orbit { to { transform: rotate(360deg); } }
+  @keyframes au-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  .au-input { width: 100%; padding: 15px 18px; background: #FFFFFF; border: 1px solid #E4EDE9; border-radius: 14px; color: #061916; font-family: inherit; font-size: 15px; outline: none; box-sizing: border-box; transition: border-color 0.3s, box-shadow 0.3s, background 0.3s; }
+  .au-input::placeholder { color: #7C948C; }
+  .au-input:focus { border-color: #4EE0B0; box-shadow: 0 0 0 4px rgba(78,224,176,0.15); }
+  .au-tab { flex: 1; padding: 12px; border-radius: 12px; border: 0; background: transparent; font-family: inherit; font-size: 14px; font-weight: 500; color: #7C948C; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; }
+  .au-tab.active { background: #FFFFFF; color: #061916; box-shadow: 0 2px 8px rgba(6,25,22,0.06); font-weight: 600; }
+  .au-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 16px 24px; border-radius: 14px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); color: #061916; font-weight: 700; font-size: 15px; border: 0; cursor: pointer; font-family: inherit; box-shadow: 0 12px 30px rgba(78,224,176,0.35); transition: transform 0.3s, box-shadow 0.3s; }
+  .au-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(78,224,176,0.50); }
+  .au-btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px 20px; border-radius: 14px; background: #FFFFFF; color: #061916; font-weight: 600; font-size: 14px; border: 1px solid #E4EDE9; cursor: pointer; font-family: inherit; transition: border-color 0.3s, background 0.3s; }
+  .au-btn-ghost:hover { border-color: #4EE0B0; background: #F0FBF6; }
+  .au-check { width: 20px; height: 20px; border-radius: 6px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); display: grid; place-items: center; flex-shrink: 0; }
+
+  .au-feature { display: flex; align-items: center; gap: 14px; padding: 14px 0; }
+  .au-feature-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.12); backdrop-filter: blur(8px); display: grid; place-items: center; flex-shrink: 0; }
+
+  select.au-input { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none'><path d='M6 9 L12 15 L18 9' stroke='%237C948C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; display: grid; grid-template-columns: 1.05fr 1fr;">
+
+  <!-- LEFT PANEL — brand -->
+  <div style="position: relative; overflow: hidden; padding: 48px 56px; background:
+      radial-gradient(600px 400px at 20% 10%, rgba(78,224,176,0.35), transparent 60%),
+      radial-gradient(500px 400px at 90% 90%, rgba(78,224,176,0.20), transparent 60%),
+      linear-gradient(160deg, #0A2A22 0%, #061916 55%, #04120F 100%);
+    color: #F1FAF5; display: flex; flex-direction: column; justify-content: space-between;">
+
+    <!-- grid overlay -->
+    <div style="position: absolute; inset: 0; background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 48px 48px; mask-image: radial-gradient(1000px 700px at 50% 50%, black, transparent 90%); pointer-events: none;"></div>
+
+    <!-- orbiting ring -->
+    <div style="position: absolute; right: -100px; top: 40%; width: 320px; height: 320px; border: 1px dashed rgba(78,224,176,0.30); border-radius: 50%; animation: au-orbit 30s linear infinite;">
+      <div style="position: absolute; top: -8px; left: 50%; width: 16px; height: 16px; border-radius: 50%; background: #4EE0B0; margin-left: -8px; box-shadow: 0 0 20px #4EE0B0;"></div>
+    </div>
+
+    <!-- Logo -->
+    <a href="CrypInvest Landing.dc.html" style="position: relative; display: flex; align-items: center; gap: 12px; color: #F1FAF5; z-index: 2;">
+      <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); display: grid; place-items: center; box-shadow: 0 8px 24px rgba(78,224,176,0.35);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 14 L10 8 L14 12 L20 6" stroke="#061916" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; letter-spacing: -0.01em;">Cryp<span style="color:#4EE0B0;">Invest</span></span>
+    </a>
+
+    <!-- Middle -->
+    <div style="position: relative; z-index: 2; animation: au-rise 0.8s cubic-bezier(.2,.7,.2,1) both;">
+      <div style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 999px; background: rgba(78,224,176,0.10); border: 1px solid rgba(78,224,176,0.30); font-size: 11px; color: #9EE8CB; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 32px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 14 L10 8 L14 12 L20 6" stroke="#4EE0B0" stroke-width="2.5" stroke-linecap="round"/></svg>
+        CrypInvest · Personal
+      </div>
+
+      <h1 style="font-family: 'Playfair Display', serif; font-size: 68px; line-height: 1.02; letter-spacing: -0.02em; margin: 0; color: #F1FAF5; font-weight: 700; max-width: 560px;">
+        One wallet.<br/>Every <em style="color:#4EE0B0;">strategy</em> —<br/>compounding.
+      </h1>
+
+      <p style="margin: 24px 0 40px; color: #A8BEB6; font-size: 17px; line-height: 1.55; max-width: 460px;">
+        Log in to deploy capital across 14 chains with the security of MPC custody and the transparency of on-chain proofs.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; max-width: 480px;">
+        <div class="au-feature">
+          <div class="au-feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3 L20 7 V12 C20 16.5 16.5 20 12 21 C7.5 20 4 16.5 4 12 V7 Z" stroke="#4EE0B0" stroke-width="1.8"/></svg></div>
+          <span style="font-size: 14px; color:#E6F1EC;">MPC · SOC 2</span>
+        </div>
+        <div class="au-feature">
+          <div class="au-feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18 L9 12 L13 15 L20 6" stroke="#4EE0B0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 6 H20 V12" stroke="#4EE0B0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span style="font-size: 14px; color:#E6F1EC;">11.8% avg APY</span>
+        </div>
+        <div class="au-feature">
+          <div class="au-feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#4EE0B0" stroke-width="1.8"/><path d="M12 8 V12 L15 14" stroke="#4EE0B0" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <span style="font-size: 14px; color:#E6F1EC;">8-sec withdrawals</span>
+        </div>
+        <div class="au-feature">
+          <div class="au-feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 8 H20 M4 12 H20 M4 16 H14" stroke="#4EE0B0" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <span style="font-size: 14px; color:#E6F1EC;">14 chains</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer trust -->
+    <div style="position: relative; z-index: 2; display: flex; align-items: center; gap: 14px; color: #A8BEB6; font-size: 13px;">
+      <div style="display: flex;">
+        <div style="width: 28px; height: 28px; border-radius: 50%; background: #4EE0B0; border: 2px solid #061916;"></div>
+        <div style="width: 28px; height: 28px; border-radius: 50%; background: #B4E8D4; border: 2px solid #061916; margin-left: -8px;"></div>
+        <div style="width: 28px; height: 28px; border-radius: 50%; background: #F0D8A8; border: 2px solid #061916; margin-left: -8px;"></div>
+        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 2px solid #061916; margin-left: -8px; display: grid; place-items: center; font-size: 11px; color: #E6F1EC;">+</div>
+      </div>
+      <div>Join <strong style="color:#F1FAF5;">148,000+</strong> investors already on-chain.</div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL — auth form -->
+  <div style="position: relative; padding: 48px 56px; display: flex; flex-direction: column;">
+
+    <!-- Language selector -->
+    <div style="display: flex; justify-content: flex-end;">
+      <button style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; border: 1px solid #E4EDE9; background: #FFFFFF; color: #061916; font-size: 13px; cursor: pointer;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#7C948C" stroke-width="1.8"/><path d="M3 12 H21 M12 3 A14 14 0 0 1 12 21 A14 14 0 0 1 12 3" stroke="#7C948C" stroke-width="1.5"/></svg>
+        English
+      </button>
+    </div>
+
+    <!-- Form -->
+    <div style="margin: auto; width: 100%; max-width: 440px; animation: au-rise 0.7s cubic-bezier(.2,.7,.2,1) 0.15s both;">
+
+      <!-- Eyebrow -->
+      <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: #F0FBF6; border: 1px solid #C9EED9; font-size: 12px; color: #1F8A6A; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 20px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="4" y="8" width="16" height="10" rx="2" stroke="#1F8A6A" stroke-width="1.8"/><path d="M8 8 V6 A4 4 0 0 1 16 6 V8" stroke="#1F8A6A" stroke-width="1.8"/></svg>
+        Personal account
+      </div>
+
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 12px; color: #061916; font-weight: 700;">
+        Welcome <em style="color:#1F8A6A;">back</em>.
+      </h2>
+      <p style="margin: 0 0 32px; color: #4A6259; font-size: 15px;">Log in to your CrypInvest personal account.</p>
+
+      <!-- Method tabs -->
+      <div style="display: flex; padding: 6px; border-radius: 14px; background: #F0F5F3; margin-bottom: 24px;">
+        <button class="au-tab active" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M4 8 L12 14 L20 8" stroke="currentColor" stroke-width="1.8"/></svg>
+          Email
+        </button>
+        <button class="au-tab" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 4 H9 L11 9 L8 11 A11 11 0 0 0 13 16 L15 13 L20 15 V19 A2 2 0 0 1 18 21 A17 17 0 0 1 3 6 A2 2 0 0 1 5 4 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          Phone
+        </button>
+        <button class="au-tab" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="1.8"/><path d="M14 14 H17 V17 M17 20 H21 M14 17 H17 V21" stroke="currentColor" stroke-width="1.8"/></svg>
+          Wallet
+        </button>
+      </div>
+
+      <form onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 18px;">
+
+        <div>
+          <label style="display: block; font-size: 13px; font-weight: 600; color: #061916; margin-bottom: 8px;">Email address</label>
+          <div style="position: relative;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%);"><rect x="3" y="6" width="18" height="14" rx="2" stroke="#7C948C" stroke-width="1.8"/><path d="M4 8 L12 14 L20 8" stroke="#7C948C" stroke-width="1.8"/></svg>
+            <input class="au-input" type="email" placeholder="you@wallet.com" style="padding-left: 42px;"/>
+          </div>
+        </div>
+
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <label style="font-size: 13px; font-weight: 600; color: #061916;">Password</label>
+            <a href="#" style="font-size: 13px; color: #1F8A6A; font-weight: 500;">Forgot?</a>
+          </div>
+          <div style="position: relative;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%);"><rect x="4" y="10" width="16" height="10" rx="2" stroke="#7C948C" stroke-width="1.8"/><path d="M8 10 V7 A4 4 0 0 1 16 7 V10" stroke="#7C948C" stroke-width="1.8"/></svg>
+            <input class="au-input" type="password" placeholder="Enter your password" style="padding-left: 42px; padding-right: 42px;"/>
+            <button type="button" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: 0; cursor: pointer; padding: 6px; display: grid; place-items: center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 12 C4 7 8 5 12 5 C16 5 20 7 22 12 C20 17 16 19 12 19 C8 19 4 17 2 12 Z" stroke="#7C948C" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="#7C948C" stroke-width="1.8"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #061916; cursor: pointer;">
+          <span class="au-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#061916" stroke-width="3" stroke-linecap="round"/></svg>
+          </span>
+          Keep me signed in
+        </label>
+
+        <button type="submit" class="au-btn-primary" style="margin-top: 4px;">
+          Log in
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div style="display: flex; align-items: center; gap: 12px; margin: 8px 0; color: #7C948C; font-size: 13px;">
+          <div style="flex: 1; height: 1px; background: #E4EDE9;"></div>
+          or continue with
+          <div style="flex: 1; height: 1px; background: #E4EDE9;"></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <button type="button" class="au-btn-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2 A5 5 0 0 1 17 7 A5 5 0 0 1 12 12 A5 5 0 0 1 7 7 A5 5 0 0 1 12 2 M4 22 C4 17 8 14 12 14 C16 14 20 17 20 22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Passkey
+          </button>
+          <button type="button" class="au-btn-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="3" height="3" fill="currentColor"/><rect x="18" y="18" width="3" height="3" fill="currentColor"/></svg>
+            QR login
+          </button>
+        </div>
+
+        <div style="margin-top: 16px; text-align: center; color: #4A6259; font-size: 14px;">
+          New to CrypInvest? <a href="#" style="color: #1F8A6A; font-weight: 600;">Create an account</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Fine print -->
+    <div style="text-align: center; font-size: 12px; color: #7C948C;">
+      Protected by MPC custody · SOC 2 Type II · <a href="#" style="color: #1F8A6A;">Privacy</a>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

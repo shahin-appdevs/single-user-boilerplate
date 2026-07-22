@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #061916; color: #E6F1EC; font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #4EE0B0; text-decoration: none; }
+  a:hover { color: #7DEEC5; }
+  ::selection { background: #4EE0B0; color: #061916; }
+
+  @keyframes pp-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pp-glow { 0%,100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+  @keyframes pp-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes annc-shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  @keyframes annc-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(78,224,176,0.6); } 50% { box-shadow: 0 0 0 8px rgba(78,224,176,0); } }
+
+  .pp-toggle { display: inline-flex; padding: 6px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+  .pp-toggle button { padding: 10px 22px; border-radius: 999px; border: 0; background: transparent; color: #A8BEB6; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .pp-toggle button.active { background: #4EE0B0; color: #061916; font-weight: 600; }
+
+  .pp-tier { position: relative; padding: 40px 32px; border-radius: 24px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 24px; animation: pp-rise 0.7s cubic-bezier(.2,.7,.2,1) both; transition: transform 0.4s, border-color 0.4s, background 0.4s; overflow: hidden; }
+  .pp-tier:nth-child(1) { animation-delay: 0.05s; }
+  .pp-tier:nth-child(2) { animation-delay: 0.15s; }
+  .pp-tier:nth-child(3) { animation-delay: 0.25s; }
+  .pp-tier:nth-child(4) { animation-delay: 0.35s; }
+  .pp-tier:hover { transform: translateY(-6px); border-color: rgba(78,224,176,0.30); }
+  .pp-featured { background: linear-gradient(160deg, rgba(78,224,176,0.16), rgba(78,224,176,0.02) 60%); border-color: rgba(78,224,176,0.30); transform: translateY(-12px); }
+  .pp-featured:hover { transform: translateY(-18px); }
+  .pp-badge { position: absolute; top: 20px; right: 20px; padding: 5px 12px; border-radius: 999px; background: #4EE0B0; color: #061916; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+  .pp-glow { position: absolute; right: -60px; top: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(78,224,176,0.30), transparent 70%); filter: blur(24px); animation: pp-glow 4s ease-in-out infinite; }
+  .pp-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(78,224,176,0.15); display: grid; place-items: center; flex-shrink: 0; }
+  .pp-cross { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.04); display: grid; place-items: center; flex-shrink: 0; color: #4A6259; }
+  .pp-item { display: flex; align-items: flex-start; gap: 12px; color: #A8BEB6; font-size: 14px; line-height: 1.5; }
+  .pp-item.pp-off { color: #5F7871; }
+  .pp-item strong { color: #F1FAF5; font-weight: 600; }
+  .pp-cta { display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; border-radius: 999px; font-weight: 600; font-size: 14px; }
+
+  .cmp-row { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); align-items: center; padding: 18px 24px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 14px; color: #A8BEB6; transition: background 0.3s; }
+  .cmp-row:hover { background: rgba(78,224,176,0.03); }
+  .cmp-row .cmp-name { color: #E6F1EC; font-weight: 500; }
+  .cmp-head { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); padding: 20px 24px; background: rgba(78,224,176,0.05); border-bottom: 1px solid rgba(78,224,176,0.15); }
+  .cmp-head > div { font-family: 'Playfair Display', serif; font-size: 18px; color: #F1FAF5; }
+  .cmp-head > div.cmp-featured { color: #4EE0B0; }
+
+  .faq-item { padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.06); }
+  .faq-item summary { cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 20px; list-style: none; font-family: 'Playfair Display', serif; font-size: 22px; color: #F1FAF5; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: '+'; font-family: 'DM Sans'; font-size: 28px; color: #4EE0B0; transition: transform 0.3s; }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item p { margin: 16px 0 0; color: #A8BEB6; font-size: 15px; line-height: 1.6; max-width: 800px; }
+
+  .annc-shine { position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); animation: annc-shine 6s linear infinite; pointer-events: none; }
+  .annc-dot { animation: annc-pulse 2s ease-in-out infinite; }
+  .annc-close:hover { color: #F1FAF5; background: rgba(255,255,255,0.06); }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(78,224,176,0.10), transparent 60%),
+    radial-gradient(1000px 500px at 90% 10%, rgba(78,224,176,0.06), transparent 60%),
+    radial-gradient(900px 700px at 50% 100%, rgba(78,224,176,0.08), transparent 60%),
+    linear-gradient(180deg, #041412 0%, #061916 40%, #04120F 100%); position: relative; overflow: hidden;">
+
+  <!-- grid overlay -->
+  <div style="position: absolute; inset: 0; background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: radial-gradient(1200px 800px at 50% 20%, black, transparent 80%); pointer-events: none;"></div>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div style="position: relative; z-index: 5; background: linear-gradient(90deg, rgba(78,224,176,0.14), rgba(78,224,176,0.06) 50%, rgba(78,224,176,0.14)); border-bottom: 1px solid rgba(78,224,176,0.20); overflow: hidden;">
+    <div class="annc-shine"></div>
+    <div style="position: relative; max-width: 1320px; margin: 0 auto; padding: 12px 48px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
+      <span style="display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: #4EE0B0; color: #061916; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
+        <span class="annc-dot" style="width: 6px; height: 6px; border-radius: 50%; background: #061916;"></span>
+        Limited
+      </span>
+      <span style="color: #E6F1EC; font-size: 14px; font-family: 'Playfair Display', serif; font-style: italic;">
+        Annual plans — save <strong style="font-style: normal; color: #F1FAF5;">20%</strong> through Aug 31.
+      </span>
+      <a href="#" style="display: inline-flex; align-items: center; gap: 6px; color: #4EE0B0; font-size: 13px; font-weight: 600;">
+        Claim discount
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav style="position: relative; max-width: 1280px; margin: 0 auto; padding: 28px 48px; display: flex; align-items: center; justify-content: space-between;">
+    <a href="CrypInvest Landing.dc.html" style="display: flex; align-items: center; gap: 10px; color: inherit;">
+      <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #4EE0B0, #1F8A6A); display: grid; place-items: center; box-shadow: 0 6px 24px rgba(78,224,176,0.35);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 14 L10 8 L14 12 L20 6" stroke="#061916" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; letter-spacing: -0.01em;">Cryp<span style="color:#4EE0B0;">Invest</span></span>
+    </a>
+    <div style="display: flex; align-items: center; gap: 36px; font-size: 15px; color: #A8BEB6;">
+      <a href="CrypInvest Landing.dc.html" style="color:#A8BEB6;">Home</a>
+      <a href="About.dc.html" style="color:#A8BEB6;">About</a>
+      <a href="#" style="color:#F1FAF5; font-weight: 500;">Pricing</a>
+      <a href="Contact.dc.html" style="color:#A8BEB6;">Contact</a>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="#" style="font-size: 15px; color:#E6F1EC; padding: 10px 16px;">Sign in</a>
+      <a href="#" style="font-size: 15px; color:#061916; background: #4EE0B0; padding: 11px 20px; border-radius: 999px; font-weight: 600;">Get started</a>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <section style="position: relative; max-width: 1320px; margin: 0 auto; padding: 80px 48px 40px; text-align: center;">
+    <div style="display: inline-flex; align-items: center; gap: 12px; font-size: 13px; letter-spacing: 0.14em; color: #4EE0B0; text-transform: uppercase; margin-bottom: 24px;">
+      <span style="width: 24px; height: 1px; background: #4EE0B0;"></span> Pricing Plans <span style="width: 24px; height: 1px; background: #4EE0B0;"></span>
+    </div>
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 88px; line-height: 1; letter-spacing: -0.03em; margin: 0 auto; color: #F1FAF5; font-weight: 700; max-width: 1000px;">
+      Fair fees.<br/><em style="color:#4EE0B0;">Zero</em> surprises.
+    </h1>
+    <p style="margin: 28px auto 32px; color: #A8BEB6; font-size: 19px; line-height: 1.55; max-width: 620px;">
+      Every fee visible on-chain. Pay only when you profit — never on your principal. Cancel anytime.
+    </p>
+    <div class="pp-toggle">
+      <button>Monthly</button>
+      <button class="active">Annual · save 20%</button>
+    </div>
+  </section>
+
+  <!-- TIERS -->
+  <section style="position: relative; max-width: 1320px; margin: 0 auto; padding: 60px 48px 80px;">
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: start;">
+
+      <!-- EXPLORER -->
+      <div class="pp-tier">
+        <div>
+          <div style="font-family:'Playfair Display', serif; font-style: italic; font-size: 14px; color:#7C948C; letter-spacing: 0.06em; text-transform: uppercase;">— Starter</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size: 30px; margin: 12px 0 8px; color:#F1FAF5; font-weight: 700;">Explorer</h3>
+          <p style="margin: 0; color:#A8BEB6; font-size: 14px;">For individuals dipping into on-chain investing.</p>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 4px;">
+          <span style="font-family:'Playfair Display', serif; font-size: 56px; color:#F1FAF5; line-height: 1;">$0</span>
+          <span style="color:#7C948C; font-size: 14px; margin-left: 8px;">/ mo</span>
+        </div>
+        <div style="font-size: 11px; color:#7C948C; letter-spacing: 0.04em; text-transform: uppercase; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">1% of profits only</div>
+        <div style="height: 1px; background: rgba(255,255,255,0.08);"></div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Up to <strong>$50k</strong> AUM</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>3 managed portfolios</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Access to <strong>14 chains</strong></span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Standard email support</span></div>
+        </div>
+        <a href="#" class="pp-cta" style="background: rgba(255,255,255,0.06); color:#E6F1EC; border: 1px solid rgba(255,255,255,0.10); margin-top: auto;"><span>Start free</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <!-- COMPOUNDER (featured) -->
+      <div class="pp-tier pp-featured">
+        <div class="pp-glow"></div>
+        <div class="pp-badge">Most popular</div>
+        <div style="position: relative;">
+          <div style="font-family:'Playfair Display', serif; font-style: italic; font-size: 14px; color:#9EE8CB; letter-spacing: 0.06em; text-transform: uppercase;">— Growth</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size: 30px; margin: 12px 0 8px; color:#F1FAF5; font-weight: 700;">Compounder</h3>
+          <p style="margin: 0; color:#B7D4CB; font-size: 14px;">For serious investors compounding six figures.</p>
+        </div>
+        <div style="position: relative; display: flex; align-items: baseline; gap: 4px;">
+          <span style="font-family:'Playfair Display', serif; font-size: 56px; color:#F1FAF5; line-height: 1;">$29</span>
+          <span style="color:#9EE8CB; font-size: 14px; margin-left: 8px;">/ mo</span>
+        </div>
+        <div style="position: relative; font-size: 11px; color:#9EE8CB; letter-spacing: 0.04em; text-transform: uppercase; padding: 8px 12px; border-radius: 8px; background: rgba(6,25,22,0.4); border: 1px solid rgba(78,224,176,0.2);">0.5% of profits only</div>
+        <div style="position: relative; height: 1px; background: rgba(78,224,176,0.18);"></div>
+        <div style="position: relative; display: flex; flex-direction: column; gap: 12px;">
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Up to <strong>$1M</strong> AUM</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span><strong>Unlimited</strong> custom baskets</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Real-yield <strong>auto-compound</strong></span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Tax-loss harvesting</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Priority chat + email</span></div>
+        </div>
+        <a href="#" class="pp-cta" style="position: relative; background: #4EE0B0; color:#061916; margin-top: auto; box-shadow: 0 12px 32px rgba(78,224,176,0.30);"><span>Start compounding</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <!-- PRO -->
+      <div class="pp-tier">
+        <div>
+          <div style="font-family:'Playfair Display', serif; font-style: italic; font-size: 14px; color:#7C948C; letter-spacing: 0.06em; text-transform: uppercase;">— Pro</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size: 30px; margin: 12px 0 8px; color:#F1FAF5; font-weight: 700;">Strategist</h3>
+          <p style="margin: 0; color:#A8BEB6; font-size: 14px;">For power users running seven-figure portfolios.</p>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 4px;">
+          <span style="font-family:'Playfair Display', serif; font-size: 56px; color:#F1FAF5; line-height: 1;">$99</span>
+          <span style="color:#7C948C; font-size: 14px; margin-left: 8px;">/ mo</span>
+        </div>
+        <div style="font-size: 11px; color:#7C948C; letter-spacing: 0.04em; text-transform: uppercase; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">0.25% of profits only</div>
+        <div style="height: 1px; background: rgba(255,255,255,0.08);"></div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Up to <strong>$10M</strong> AUM</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Everything in Compounder</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Advanced strategy backtests</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>API access · 5k req/min</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Live chat · <strong>1-hr SLA</strong></span></div>
+        </div>
+        <a href="#" class="pp-cta" style="background: rgba(255,255,255,0.06); color:#E6F1EC; border: 1px solid rgba(255,255,255,0.10); margin-top: auto;"><span>Upgrade to Pro</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <!-- DESK -->
+      <div class="pp-tier">
+        <div>
+          <div style="font-family:'Playfair Display', serif; font-style: italic; font-size: 14px; color:#7C948C; letter-spacing: 0.06em; text-transform: uppercase;">— Institutional</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size: 30px; margin: 12px 0 8px; color:#F1FAF5; font-weight: 700;">Desk</h3>
+          <p style="margin: 0; color:#A8BEB6; font-size: 14px;">For funds and treasuries deploying nine figures.</p>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 4px;">
+          <span style="font-family:'Playfair Display', serif; font-size: 56px; color:#F1FAF5; line-height: 1;">Custom</span>
+        </div>
+        <div style="font-size: 11px; color:#7C948C; letter-spacing: 0.04em; text-transform: uppercase; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">Negotiated basis-point fee</div>
+        <div style="height: 1px; background: rgba(255,255,255,0.08);"></div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span><strong>Unlimited</strong> AUM</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Dedicated MPC vaults</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Custom compliance workflows</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>Named account manager</span></div>
+          <div class="pp-item"><span class="pp-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="#4EE0B0" stroke-width="3" stroke-linecap="round"/></svg></span><span>24/7 desk · <strong>15-min SLA</strong></span></div>
+        </div>
+        <a href="Contact.dc.html" class="pp-cta" style="background: rgba(255,255,255,0.06); color:#E6F1EC; border: 1px solid rgba(255,255,255,0.10); margin-top: auto;"><span>Talk to sales</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPARE TABLE -->
+  <section style="position: relative; max-width: 1320px; margin: 0 auto; padding: 80px 48px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <div style="font-size: 13px; letter-spacing: 0.12em; color:#4EE0B0; text-transform: uppercase; margin-bottom: 12px;">§ Compare</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 48px; line-height: 1.05; letter-spacing: -0.02em; margin: 0; color: #F1FAF5;">Every feature, <em style="color:#4EE0B0;">side-by-side</em>.</h2>
+    </div>
+
+    <div style="border-radius: 22px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden;">
+      <div class="cmp-head">
+        <div>Feature</div>
+        <div>Explorer</div>
+        <div class="cmp-featured">Compounder</div>
+        <div>Strategist</div>
+        <div>Desk</div>
+      </div>
+      <sc-for list="{{ compareRows }}" as="row" hint-placeholder-count="8">
+        <div class="cmp-row">
+          <div class="cmp-name">{{ row.feature }}</div>
+          <div>{{ row.a }}</div>
+          <div style="color:#4EE0B0;">{{ row.b }}</div>
+          <div>{{ row.c }}</div>
+          <div>{{ row.d }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="position: relative; max-width: 900px; margin: 0 auto; padding: 100px 48px 40px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <div style="font-size: 13px; letter-spacing: 0.12em; color:#4EE0B0; text-transform: uppercase; margin-bottom: 12px;">§ Questions</div>
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 48px; line-height: 1.05; letter-spacing: -0.02em; margin: 0; color: #F1FAF5;">Common <em style="color:#4EE0B0;">questions</em>.</h2>
+    </div>
+
+    <sc-for list="{{ faq }}" as="q" hint-placeholder-count="5">
+      <details class="faq-item">
+        <summary>{{ q.q }}</summary>
+        <p>{{ q.a }}</p>
+      </details>
+    </sc-for>
+  </section>
+
+  <!-- CTA -->
+  <section style="position: relative; max-width: 1120px; margin: 120px auto; padding: 0 48px;">
+    <div style="position: relative; overflow: hidden; border-radius: 32px; padding: 64px 56px; background: radial-gradient(600px 300px at 100% 0%, rgba(78,224,176,0.25), transparent 60%), linear-gradient(135deg, #0A2A22, #041412); border: 1px solid rgba(78,224,176,0.25); display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap;">
+      <div style="max-width: 620px;">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 40px; line-height: 1.05; letter-spacing: -0.02em; margin: 0; color: #F1FAF5;">Still not sure which plan is right?</h2>
+        <p style="margin: 14px 0 0; color: #A8BEB6; font-size: 16px;">Talk to a real human on the desk. No pressure, no sales script.</p>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <a href="Contact.dc.html" style="color:#061916; background: #4EE0B0; padding: 16px 26px; border-radius: 999px; font-weight: 600; font-size: 16px;">Talk to us</a>
+        <a href="CrypInvest Landing.dc.html" style="color:#E6F1EC; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); padding: 16px 26px; border-radius: 999px; font-weight: 500; font-size: 16px;">Start free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="position: relative; max-width: 1280px; margin: 0 auto; padding: 48px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; color: #7C948C; font-size: 14px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span style="font-family: 'Playfair Display', serif; font-size: 18px; color:#E6F1EC;">Cryp<span style="color:#4EE0B0;">Invest</span></span>
+      <span style="margin-left: 12px;">© 2026</span>
+    </div>
+    <div style="display: flex; gap: 28px;">
+      <a href="CrypInvest Landing.dc.html" style="color:#7C948C;">Home</a>
+      <a href="About.dc.html" style="color:#7C948C;">About</a>
+      <a href="Contact.dc.html" style="color:#7C948C;">Contact</a>
+      <a href="#" style="color:#7C948C;">Terms</a>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const check = '✓';
+    const dash = '—';
+    const compareRows = [
+      { feature: 'Assets under management', a: 'Up to $50k', b: 'Up to $1M', c: 'Up to $10M', d: 'Unlimited' },
+      { feature: 'Performance fee', a: '1.0%', b: '0.5%', c: '0.25%', d: 'Custom bps' },
+      { feature: 'Managed portfolios', a: '3', b: 'Unlimited', c: 'Unlimited', d: 'Custom' },
+      { feature: 'Chains supported', a: '14', b: '14', c: '14', d: 'All + testnets' },
+      { feature: 'Real-yield staking', a: dash, b: check, c: check, d: check },
+      { feature: 'Tax-loss harvesting', a: dash, b: check, c: check, d: check },
+      { feature: 'API access', a: dash, b: '500 rpm', c: '5k rpm', d: 'Unlimited' },
+      { feature: 'Dedicated account manager', a: dash, b: dash, c: dash, d: check },
+      { feature: 'Support SLA', a: '48 hr', b: '4 hr', c: '1 hr', d: '15 min' },
+    ];
+
+    const faq = [
+      { q: 'Do you charge fees on my principal?', a: 'Never. We only take a small percentage of realized profits — if you don\'t make money, we don\'t make money. All fees are settled on-chain and fully verifiable.' },
+      { q: 'Can I switch plans later?', a: 'Yes, upgrade or downgrade any time. Prorated charges are applied automatically and reflected in your next billing cycle.' },
+      { q: 'What happens to my assets if I cancel?', a: 'Your assets remain in your MPC-secured wallet — you keep full custody. Cancellation only stops the subscription; your on-chain positions are untouched.' },
+      { q: 'Is there a free trial for paid plans?', a: 'Every paid plan includes a 14-day full-feature trial. No credit card required to start, cancel any time before the trial ends and you won\'t be billed.' },
+      { q: 'How does the annual discount work?', a: 'Choose annual billing and receive 20% off the monthly rate, billed once per year. Switch back to monthly whenever you want on the next renewal.' },
+    ];
+
+    return { compareRows, faq };
+  }
+}
+</script>
+</body>
+</html>
