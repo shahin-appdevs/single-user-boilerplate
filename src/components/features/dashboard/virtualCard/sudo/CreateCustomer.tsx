@@ -83,13 +83,13 @@ export default function CreateCustomerPage() {
     setFileError(null);
     // TODO: replace with the create-customer API mutation.
     toast.success(t("created"));
-    router.push("/user/dashboard/card");
+    router.push("/user/card");
   });
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-4 dapp:p-6">
       <div className="flex items-center gap-3">
-        <Button variant="outline" size="icon" className="size-9 shrink-0" aria-label={t("back")} onClick={() => router.push("/user/dashboard/card")}>
+        <Button variant="outline" size="icon" className="size-9 shrink-0" aria-label={t("back")} onClick={() => router.push("/user/card")}>
           <ArrowLeft className="size-4 rtl:rotate-180" />
         </Button>
         <DashboardPageHeader title={t("title")} subtitle={t("subtitle")} />

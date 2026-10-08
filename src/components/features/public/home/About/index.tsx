@@ -191,7 +191,7 @@ export function About({}: AboutProps) {
               Ada &amp; Ren
             </div>
             <div className="mt-1 text-[13px] tracking-[0.06em] text-muted-foreground/70 uppercase">
-              Co-founders, CrypInvest
+              Co-founders, QRSim
             </div>
           </div>
         </div>

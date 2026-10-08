@@ -17,8 +17,8 @@ const CHANNELS = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@crypinvest.io",
-    href: "mailto:hello@crypinvest.io",
+    value: "hello@qrsim.io",
+    href: "mailto:hello@qrsim.io",
   },
   {
     icon: PhoneCall,

@@ -89,7 +89,7 @@ export function TrustedBy({}: TrustedByProps) {
           data-reveal
           className="max-w-[320px] text-[15px] leading-relaxed text-muted-foreground"
         >
-          148,000 investors and 40+ funds route flow through CrypInvest every
+          148,000 investors and 40+ funds route flow through QRSim every
           day.
         </p>
       </div>
@@ -116,7 +116,7 @@ export function TrustedBy({}: TrustedByProps) {
         <div className="relative grid items-center gap-12 lg:grid-cols-[1fr_300px] lg:gap-14">
           <div>
             <blockquote className="font-hero text-[clamp(22px,2.6vw,30px)] leading-[1.35] font-semibold text-balance text-foreground italic">
-              CrypInvest is the only platform where our risk team, our compliance
+              QRSim is the only platform where our risk team, our compliance
               team, and our traders all agree. It&apos;s how we deploy nine
               figures without losing sleep.
             </blockquote>

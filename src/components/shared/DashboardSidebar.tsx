@@ -20,7 +20,7 @@ export function DashboardSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const { logout, isPending } = useLogout();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const groups = navByRole(role);
-  const supportHref = "/user/dashboard/support-ticket";
+  const supportHref = "/user/support-ticket";
 
   return (
     <div className="flex h-full flex-col gap-4 p-4">

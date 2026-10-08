@@ -41,7 +41,7 @@ const notoArabic = Noto_Sans_Arabic({
 
 
 export const metadata: Metadata = {
-  title: "CrypInvest",
+  title: "QRSim",
   description: "Smart crypto investment platform for everyone.",
 };
 

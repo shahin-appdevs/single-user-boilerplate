@@ -71,7 +71,7 @@ export function StepDone({ kycStatus }: { kycStatus: KycOutcome }) {
 
       <Button
         type="button"
-        onClick={() => router.replace("/user/dashboard/overview")}
+        onClick={() => router.replace("/user/overview")}
         className="mt-2 h-12 w-full text-white"
         style={{ backgroundImage: "var(--grad)" }}
       >

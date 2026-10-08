@@ -98,55 +98,55 @@ const personalNav: NavGroup[] = [
   {
     labelKey: "main",
     items: [
-      { href: "/user/dashboard/overview",  icon: LayoutDashboard, labelKey: "dashboard" },
+      { href: "/user/overview",  icon: LayoutDashboard, labelKey: "dashboard" },
     ],
   },
   {
     labelKey: "money",
     items: [
-      { href: "/user/dashboard/money-transfer",   icon: Send,            labelKey: "send"          },
-      { href: "/user/dashboard/receive",        icon: QrCode,          labelKey: "receive"       },
-      { href: "/user/dashboard/add-money",      icon: BadgeDollarSign, labelKey: "addMoney"      },
-      { href: "/user/dashboard/withdraw-money", icon: ArrowUpRight,    labelKey: "withdraw"      },
-      { href: "/user/dashboard/money-exchange", icon: ArrowLeftRight,  labelKey: "exchange"       },
-      { href: "/user/dashboard/pay-out",        icon: Store,           labelKey: "payAndWithdraw" },
-      { href: "/user/dashboard/payment-link",   icon: Link2,           labelKey: "paymentLink"    },
-      { href: "/user/dashboard/statement",      icon: Receipt,         labelKey: "statement"     },
+      { href: "/user/money-transfer",   icon: Send,            labelKey: "send"          },
+      { href: "/user/receive",        icon: QrCode,          labelKey: "receive"       },
+      { href: "/user/add-money",      icon: BadgeDollarSign, labelKey: "addMoney"      },
+      { href: "/user/withdraw-money", icon: ArrowUpRight,    labelKey: "withdraw"      },
+      { href: "/user/money-exchange", icon: ArrowLeftRight,  labelKey: "exchange"       },
+      { href: "/user/pay-out",        icon: Store,           labelKey: "payAndWithdraw" },
+      { href: "/user/payment-link",   icon: Link2,           labelKey: "paymentLink"    },
+      { href: "/user/statement",      icon: Receipt,         labelKey: "statement"     },
     ],
   },
   {
     labelKey: "cards",
     items: [
-      { href: "/user/dashboard/card",           icon: CreditCard,      labelKey: "card"          },
-      { href: "/user/dashboard/gift-card",      icon: Gift,            labelKey: "giftCard"       },
+      { href: "/user/card",           icon: CreditCard,      labelKey: "card"          },
+      { href: "/user/gift-card",      icon: Gift,            labelKey: "giftCard"       },
     ],
   },
   {
     labelKey: "services",
     items: [
-      { href: "/user/dashboard/bill-pay",       icon: ReceiptText,     labelKey: "billPay"        },
-      { href: "/user/dashboard/mobile-topup",   icon: Smartphone,      labelKey: "mobileTopUp"    },
-      { href: "/user/dashboard/p2p-trade",      icon: Handshake,       labelKey: "p2pTrade"       },
-      { href: "/user/dashboard/my-chat",        icon: MessagesSquare,  labelKey: "myChat"         },
-      { href: "/user/dashboard/remittance",     icon: Globe,           labelKey: "remittance"     },
+      { href: "/user/bill-pay",       icon: ReceiptText,     labelKey: "billPay"        },
+      { href: "/user/mobile-topup",   icon: Smartphone,      labelKey: "mobileTopUp"    },
+      { href: "/user/p2p-trade",      icon: Handshake,       labelKey: "p2pTrade"       },
+      { href: "/user/my-chat",        icon: MessagesSquare,  labelKey: "myChat"         },
+      { href: "/user/remittance",     icon: Globe,           labelKey: "remittance"     },
     ],
   },
   {
     labelKey: "security",
     items: [
-      { href: "/user/dashboard/two-factor-auth", icon: ShieldCheck, labelKey: "twoFactorAuth" },
-      { href: "/user/dashboard/setup-pin",       icon: KeyRound,    labelKey: "setupPin" },
+      { href: "/user/two-factor-auth", icon: ShieldCheck, labelKey: "twoFactorAuth" },
+      { href: "/user/setup-pin",       icon: KeyRound,    labelKey: "setupPin" },
     ],
   },
   {
     labelKey: "account",
     items: [
-      { href: "/user/dashboard/recipients", icon: Contact, labelKey: "recipients" },
-      { href: "/user/dashboard/referral", icon: Users, labelKey: "referral" },
-      { href: "/user/dashboard/profile", icon: User, labelKey: "profile" },
-      { href: "/user/dashboard/support-ticket", icon: LifeBuoy, labelKey: "supportTickets" },
+      { href: "/user/recipients", icon: Contact, labelKey: "recipients" },
+      { href: "/user/referral", icon: Users, labelKey: "referral" },
+      { href: "/user/profile", icon: User, labelKey: "profile" },
+      { href: "/user/support-ticket", icon: LifeBuoy, labelKey: "supportTickets" },
       {
-        href: "/user/dashboard/notifications",
+        href: "/user/notifications",
         icon: Bell,
         labelKey: "notifications",
         badgeKey: "notifications",
@@ -165,9 +165,9 @@ export const navByRole = (role: Role): NavGroup[] => NAV_BY_ROLE[role] ?? person
 /* ─── Mobile bottom-nav (primary tabs + More) ─────────────────────────────── */
 
 const personalBottomNav: NavItem[] = [
-  { href: "/user/dashboard/overview",     icon: LayoutDashboard, labelKey: "dashboard" },
-  { href: "/user/dashboard/money-transfer", icon: Send,            labelKey: "send"      },
-  { href: "/user/dashboard/statement",    icon: Receipt,         labelKey: "statement" },
+  { href: "/user/overview",     icon: LayoutDashboard, labelKey: "dashboard" },
+  { href: "/user/money-transfer", icon: Send,            labelKey: "send"      },
+  { href: "/user/statement",    icon: Receipt,         labelKey: "statement" },
 ];
 
 const BOTTOM_NAV_BY_ROLE: Record<Role, NavItem[]> = {

@@ -46,10 +46,10 @@ export function AuthAside() {
       </div>
 
       {/* Logo */}
-      <Link href="/" aria-label="CrypInvest" className="relative z-10 inline-flex">
+      <Link href="/" aria-label="QRSim" className="relative z-10 inline-flex">
         <Image
           src="/images/logo/logo-dark.webp"
-          alt="CrypInvest"
+          alt="QRSim"
           width={130}
           height={32}
           priority

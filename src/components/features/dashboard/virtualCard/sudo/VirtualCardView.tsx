@@ -24,7 +24,7 @@ export function VirtualCardView({
         )}
       >
         <div className="flex items-center justify-between">
-          <span className="text-[10px] font-semibold tracking-wide">CrypInvest</span>
+          <span className="text-[10px] font-semibold tracking-wide">QRSim</span>
           <QrCode className="size-4 opacity-70" />
         </div>
         <span dir="ltr" className="text-xs font-medium tabular-nums tracking-widest">
@@ -42,7 +42,7 @@ export function VirtualCardView({
       )}
     >
       <div className="flex items-start justify-between">
-        <span className="text-sm font-semibold tracking-wide">CrypInvest</span>
+        <span className="text-sm font-semibold tracking-wide">QRSim</span>
         <QrCode className="size-9 opacity-90" />
       </div>
 

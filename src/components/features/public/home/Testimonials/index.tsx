@@ -269,7 +269,7 @@ export function Testimonials({}: TestimonialsProps) {
           </div>
           <p className="text-[15px] leading-[1.5] text-foreground/90">
             Been running six figures through{" "}
-            <span className="text-primary">@CrypInvest</span> for 14 months. Zero
+            <span className="text-primary">@QRSim</span> for 14 months. Zero
             drama. Withdrawals in 8 seconds. This is the future of on-chain wealth
             mgmt.
           </p>
@@ -335,7 +335,7 @@ export function Testimonials({}: TestimonialsProps) {
             <VerifiedBadge>Watch story</VerifiedBadge>
             <p className="mt-2 font-hero text-[20px] leading-[1.35] font-semibold text-foreground/90">
               &ldquo;I moved my family&apos;s savings on-chain last year.
-              CrypInvest was the reason I could actually sleep.&rdquo;
+              QRSim was the reason I could actually sleep.&rdquo;
             </p>
             <div className="mt-3.5 flex items-center gap-2.5 text-[13px] text-muted-foreground">
               <Avatar initials="SG" size={28} className="bg-[#D8B4E8]" />

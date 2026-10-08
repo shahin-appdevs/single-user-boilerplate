@@ -114,7 +114,7 @@ export function AboutContent({}: AboutContentProps) {
               not <span className="text-primary italic">brokers</span>.
             </h1>
             <p className="mt-8 max-w-[620px] text-[clamp(17px,2vw,20px)] leading-relaxed text-muted-foreground">
-              CrypInvest was founded in 2021 by a small team of traders,
+              QRSim was founded in 2021 by a small team of traders,
               cryptographers, and risk engineers — the platform we always wished
               existed for serious on-chain capital.
             </p>

@@ -29,7 +29,7 @@ export default function PaymentLinkPage() {
   }
 
   function openEdit(l: PaymentLink) {
-    router.push(`/user/dashboard/payment-link/create?id=${l.id}`);
+    router.push(`/user/payment-link/create?id=${l.id}`);
   }
 
   function confirmDelete() {
@@ -60,7 +60,7 @@ export default function PaymentLinkPage() {
           extra={
             <Button
               size="sm"
-              onClick={() => router.push("/user/dashboard/payment-link/create")}
+              onClick={() => router.push("/user/payment-link/create")}
               className="h-9 [background:var(--gradient)] text-white hover:opacity-90"
             >
               <Plus className="me-1.5 size-4" />

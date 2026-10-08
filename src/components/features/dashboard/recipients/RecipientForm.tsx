@@ -59,7 +59,7 @@ export function RecipientForm({ mode, initialType, initialValues }: RecipientFor
     void { transactionType: txType, ...values };
     toast.success(mode === "edit" ? t("toast.updated") : t("toast.added"));
     if (mode === "add") reset();
-    router.push("/user/dashboard/recipients");
+    router.push("/user/recipients");
   });
 
   function renderField(f: RecipientField) {
@@ -129,7 +129,7 @@ export function RecipientForm({ mode, initialType, initialValues }: RecipientFor
           variant="ghost"
           size="sm"
           className="h-9 gap-2"
-          onClick={() => router.push("/user/dashboard/recipients")}
+          onClick={() => router.push("/user/recipients")}
         >
           <ArrowLeft className="size-4 rtl:rotate-180" />
           {t("back")}

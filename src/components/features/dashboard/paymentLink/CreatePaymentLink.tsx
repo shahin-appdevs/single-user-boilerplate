@@ -92,7 +92,7 @@ export default function CreatePaymentLinkPage() {
     }
     // TODO: replace with the create-payment-link API mutation.
     toast.success(t("created"));
-    router.push("/user/dashboard/payment-link");
+    router.push("/user/payment-link");
   }
 
   return (
@@ -103,7 +103,7 @@ export default function CreatePaymentLinkPage() {
           size="icon"
           className="size-9 shrink-0"
           aria-label={t("back")}
-          onClick={() => router.push("/user/dashboard/payment-link")}
+          onClick={() => router.push("/user/payment-link")}
         >
           <ArrowLeft className="size-4 rtl:rotate-180" />
         </Button>

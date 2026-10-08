@@ -66,7 +66,7 @@ export default function VirtualCardPage() {
                     : key === "makeDefault"
                       ? setDefaultOpen(true)
                       : key === "fund"
-                        ? router.push("/user/dashboard/card/fund")
+                        ? router.push("/user/card/fund")
                         : toast.message(t(`actionSoon.${key}` as "actionSoon.details"))
                 }
                 className="flex cursor-pointer flex-col items-center gap-1.5 rounded-xl bg-muted/50 py-3 text-xs font-medium transition-colors hover:bg-muted"
@@ -115,7 +115,7 @@ export default function VirtualCardPage() {
             <Button
               size="lg"
               variant="outline"
-              onClick={() => router.push("/user/dashboard/card/customer")}
+              onClick={() => router.push("/user/card/customer")}
               className="h-11"
             >
               <UserPlus className="me-2 size-4" />
@@ -123,7 +123,7 @@ export default function VirtualCardPage() {
             </Button>
             <Button
               size="lg"
-              onClick={() => router.push("/user/dashboard/card/create")}
+              onClick={() => router.push("/user/card/create")}
               className="h-11 [background:var(--gradient)] text-white hover:opacity-90"
             >
               <Plus className="me-2 size-4" />

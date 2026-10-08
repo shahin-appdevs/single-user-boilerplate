@@ -139,7 +139,7 @@ export function LoginForm() {
           Welcome <em className="italic" style={{ color: "var(--primary)" }}>back</em>.
         </h1>
         <p className="mt-3 text-[15px] text-muted-foreground">
-          Log in to your CrypInvest {meta.label.toLowerCase()} account.
+          Log in to your QRSim {meta.label.toLowerCase()} account.
         </p>
       </div>
 
@@ -308,7 +308,7 @@ export function LoginForm() {
       </div>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        New to CrypInvest?{" "}
+        New to QRSim?{" "}
         <Link
           href="/register"
           className="font-bold"

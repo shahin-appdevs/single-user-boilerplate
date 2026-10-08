@@ -113,7 +113,7 @@ export default function ProfilePage() {
           <Button variant="outline" size="sm" className="h-9" onClick={() => setConfirmDelete(true)}>
             {t("deleteAccount")}
           </Button>
-          <Button size="sm" className="h-9 [background:var(--gradient)] text-white hover:opacity-90" onClick={() => router.push("/user/dashboard/setup-pin")}>
+          <Button size="sm" className="h-9 [background:var(--gradient)] text-white hover:opacity-90" onClick={() => router.push("/user/setup-pin")}>
             <KeyRound className="me-1.5 size-4" />
             {t("setupPin")}
           </Button>

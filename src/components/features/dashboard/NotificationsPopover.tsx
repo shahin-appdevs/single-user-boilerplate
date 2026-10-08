@@ -106,7 +106,7 @@ export function NotificationsPopover({ className }: { className?: string }) {
         )}
 
         <Link
-          href="/user/dashboard/notifications"
+          href="/user/notifications"
           onClick={() => setOpen(false)}
           className="block px-3 py-2 text-center text-sm font-medium text-primary hover:underline"
         >

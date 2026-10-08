@@ -11,7 +11,7 @@ import {
 import type { Role } from "@/types/auth";
 
 // Role accent scoped to the auth subtree via CSS custom properties.
-// CrypInvest green — matches the landing palette and the Auth design.
+// QRSim green — matches the landing palette and the Auth design.
 export const ROLE_ACCENT: Record<Role, CSSProperties> = {
   user: {
     "--grad-from": "hsl(164 82% 53%)",
@@ -37,7 +37,7 @@ export const ROLE_META: Record<Role, RoleMeta> = {
   user: {
     label: "User",
     kicker: "User account",
-    eyebrow: "CrypInvest · User",
+    eyebrow: "QRSim · User",
     icon: Wallet,
     headline: "One wallet. Every strategy — compounding.",
     headlineAccent: "strategy",

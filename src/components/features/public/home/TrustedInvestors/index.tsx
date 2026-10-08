@@ -124,7 +124,7 @@ export function TrustedInvestors({}: TrustedInvestorsProps) {
           className="mt-5 max-w-[22ch] font-hero text-[clamp(36px,5vw,68px)] leading-[1.03] font-bold tracking-tight text-balance text-foreground"
         >
           The best investors trust{" "}
-          <span className="text-primary">CrypInvest</span>
+          <span className="text-primary">QRSim</span>
         </h2>
       </div>
 

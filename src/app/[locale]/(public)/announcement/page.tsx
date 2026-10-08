@@ -27,7 +27,7 @@ const KEYWORDS = [
   "product update",
   "release notes",
   "roadmap",
-  "CrypInvest",
+  "QRSim",
 ];
 
 const CHIP =

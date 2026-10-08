@@ -28,7 +28,7 @@ export default function RecipientsPage() {
   const data = RECIPIENTS_API_READY ? query.data ?? [] : rows;
 
   function openEdit(r: Recipient) {
-    router.push(`/user/dashboard/recipients/edit?id=${r.id}`);
+    router.push(`/user/recipients/edit?id=${r.id}`);
   }
 
   function confirmDelete() {
@@ -54,7 +54,7 @@ export default function RecipientsPage() {
           extra={
             <Button
               size="sm"
-              onClick={() => router.push("/user/dashboard/recipients/add")}
+              onClick={() => router.push("/user/recipients/add")}
               className="h-9 [background:var(--gradient)] text-white hover:opacity-90"
             >
               {t("addNew")}

@@ -43,10 +43,10 @@ import { TransactionDetailModal } from "@/components/features/dashboard/transact
 /* ─── Mock data ──────────────────────────────────────────────────────────── */
 
 const BALANCE_ACTIONS = [
-  { label: "Send",               icon: ArrowUpRight,  href: "/user/dashboard/money-transfer", primary: true },
-  { label: "Request",            icon: ArrowDownLeft, href: "/user/dashboard/money-transfer" },
-  { label: "Add money",          icon: Plus,          href: "/user/dashboard/add-money" },
-  { label: "Exchange",           icon: ArrowLeftRight, href: "/user/dashboard/money-exchange" },
+  { label: "Send",               icon: ArrowUpRight,  href: "/user/money-transfer", primary: true },
+  { label: "Request",            icon: ArrowDownLeft, href: "/user/money-transfer" },
+  { label: "Add money",          icon: Plus,          href: "/user/add-money" },
+  { label: "Exchange",           icon: ArrowLeftRight, href: "/user/money-exchange" },
 ];
 
 const CURRENCY_WALLETS = [

@@ -37,14 +37,14 @@ export function ProfileMenu() {
   const [open, setOpen] = useState(false);
 
   const primary: MenuLink[] = [
-    { key: "sendMoney", label: t("sendMoney"), href: "/user/dashboard/money-transfer", icon: Send },
-    { key: "addFund", label: t("addFund"), href: "/user/dashboard/add-money", icon: PlusCircle },
-    { key: "withdraw", label: t("withdraw"), href: "/user/dashboard/withdraw-money", icon: ArrowDownToLine },
+    { key: "sendMoney", label: t("sendMoney"), href: "/user/money-transfer", icon: Send },
+    { key: "addFund", label: t("addFund"), href: "/user/add-money", icon: PlusCircle },
+    { key: "withdraw", label: t("withdraw"), href: "/user/withdraw-money", icon: ArrowDownToLine },
   ];
 
   const secondary: MenuLink[] = [
-    { key: "kyc", label: t("kyc"), href: "/user/dashboard/profile", icon: UserRound },
-    { key: "twoFa", label: t("twoFa"), href: "/user/dashboard/two-factor-auth", icon: ShieldCheck },
+    { key: "kyc", label: t("kyc"), href: "/user/profile", icon: UserRound },
+    { key: "twoFa", label: t("twoFa"), href: "/user/two-factor-auth", icon: ShieldCheck },
   ];
 
   return (

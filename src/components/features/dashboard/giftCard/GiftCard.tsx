@@ -30,7 +30,7 @@ export default function GiftCardPage() {
           extra={
             <Button
               size="sm"
-              onClick={() => router.push("/user/dashboard/gift-card/list")}
+              onClick={() => router.push("/user/gift-card/list")}
               className="h-9 [background:var(--gradient)] text-white hover:opacity-90"
             >
               <Plus className="me-1.5 size-4" />
